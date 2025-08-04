@@ -21,7 +21,7 @@
         public const string IconType_Head = "HeadIconLib";
         public const string IconType_Item = "ItemIconLib";
         public const string IconType_CommonUI = "CommonIconUILib";
-        // public const string IconType_Goods = "GoodsIconLib";
+        public const string IconType_Goods = "GoodsIconLib";
 
         #endregion
     }

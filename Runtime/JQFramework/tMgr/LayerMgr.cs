@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace JQFramework.tMgr
 {
@@ -8,7 +9,7 @@ namespace JQFramework.tMgr
         public static int[] UILayers;
         public static int[] UIWorld;
 
-        public static void init()
+        public static void init(string[] gameLayers)
         {
             ELayer.Default = LayerMask.NameToLayer("Default");
             ELayer.Ground = LayerMask.NameToLayer("Ground");
@@ -19,15 +20,20 @@ namespace JQFramework.tMgr
             ELayer.UIWorld = LayerMask.NameToLayer("UIWorld");
             ELayer.UIMesh = LayerMask.NameToLayer("UIMesh");
 
-            ELayer.CubePillar = LayerMask.NameToLayer("CubePillar");
-            ELayer.Cube = LayerMask.NameToLayer("Cube");
-            ELayer.CubeBox = LayerMask.NameToLayer("CubeBox");
+            List<int> normalLayers = new List<int>();
+            normalLayers.Add(ELayer.Default);
+            foreach (var layer in gameLayers)
+            {
+                int layerInt = LayerMask.NameToLayer(layer);
+                ELayer.layerDic[layer] = layerInt;
+                normalLayers.Add(layerInt);
+            }
 
             ELayer.RenderHigh = LayerMask.NameToLayer("RenderHigh");
             ELayer.RenderMiddle = LayerMask.NameToLayer("RenderMiddle");
             ELayer.RenderLow = LayerMask.NameToLayer("RenderLow");
             ELayer.NotRender = LayerMask.NameToLayer("NotRender");
-            NormalLayers = new[] { ELayer.Default, ELayer.CubePillar, ELayer.Cube, ELayer.CubeBox };
+            NormalLayers = normalLayers.ToArray();
             UILayers = new[] { ELayer.UI };
             UIWorld = new[] { ELayer.UIWorld };
         }
@@ -47,6 +53,7 @@ namespace JQFramework.tMgr
 
     public static class ELayer
     {
+        public static Dictionary<string, int> layerDic = new Dictionary<string, int>();
         public static int Default;
         public static int Ground;
         public static int Transparent;
@@ -56,9 +63,6 @@ namespace JQFramework.tMgr
         public static int UIWorld;
         public static int UIMesh;
 
-        public static int CubeBox;
-        public static int CubePillar;
-        public static int Cube;
 
         public static int RenderHigh;
         public static int RenderMiddle;
