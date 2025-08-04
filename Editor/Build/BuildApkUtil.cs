@@ -321,7 +321,9 @@ namespace JQEditor.Build
                     break;
                 case BuildTarget.WebGL:
                     // BuildInWebGl(buildScenes);
+#if SDK_WEIXIN
                     BuildInWxMiniGame(buildScenes);
+#endif
                     break;
 #if SDK_WEIXIN
                 // case BuildTarget.WeixinMiniGame:
