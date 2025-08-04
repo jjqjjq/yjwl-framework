@@ -1,0 +1,19 @@
+{
+    "name": "ET.Core",
+    "rootNamespace": "ET",
+    "references": [
+        "Unity.Mathematics",
+        "ET.ThirdParty",
+        "JQCore",
+        "UnityWebSocket.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,60 @@
+#if TextMeshPro
+using TMPro;
+#endif
+using JQCore.tRes;
+using JQFramework.tMVC.Attributes;
+using JQFramework.tMVC.Base;
+using JQGame.tEnum;
+using UnityEngine;
+
+namespace JQGame.MVC.Module
+{
+    [SubViewName(EView.$eViewName$)]
+    public partial class $viewClassName$:ObjSubView
+    {
+        public $viewClassName$()
+        {
+            
+        }
+
+		protected override void OnSubViewLoadFinish()
+        {
+        }
+
+        public override void OnSubViewDestory()
+        {
+        }
+
+        protected override void OnSubViewOpen()
+        {
+		
+        }
+
+        protected override void OnSubViewRefresh()
+        {
+            
+        }
+
+        public override void OnSubViewClose()
+        {
+            
+        }
+
+        #region event
+        
+        
+        protected override void OnAddEvent()
+        {
+		
+        }
+
+        protected override void OnRemoveEvent()
+        {
+		
+        }
+
+$eventFunc$
+
+        #endregion
+    }
+}
