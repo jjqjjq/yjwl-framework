@@ -16,5 +16,6 @@
         public const string UpdateJoystick = "UpdateJoystick";
         public const string StopJoystick = "StopJoystick";
         public const string SettingChange = "SettingChange";
+        public const string SubscribeUpdate = "SubscribeUpdate";
     }
 }

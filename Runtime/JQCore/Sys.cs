@@ -112,6 +112,28 @@ namespace JQCore
         {
             if (loadingUi != null) loadingUi.showMessageBox(titleStr, textStr, leftStr, leftAction, rightStr, rightAction);
         }
+        
+        
+
+        public static void Init(Action openWaitViewAction, Action closeWaitViewAction)
+        {
+            _openWaitViewAction = openWaitViewAction;
+            _closeWaitViewAction = closeWaitViewAction;
+        }
+
+        private static Action _openWaitViewAction;
+        private static Action _closeWaitViewAction;
+        public static void openWaitView()
+        {
+            _openWaitViewAction?.Invoke();
+        }
+
+        public static void closeWaitView()
+        {
+            _closeWaitViewAction?.Invoke();
+        }
+        
+        
 
         public static void setLoadingText(string text)
         {
