@@ -21,7 +21,7 @@ namespace JQEditor.Build
         }
         string projectPath = pathToBuiltProject + "/Unity-iPhone.xcodeproj/project.pbxproj";
         SetFrameworksAndBuildSettings(projectPath);
-        SetInfoList(pathToBuiltProject, "com.yjwl.superauxiliary", "wxcc24a2b9575c404b");
+        SetInfoList(pathToBuiltProject, "wxUrlName", "wxScheme");
         SetAssociatedDomains(projectPath, "ssz2.gz-spi.com/ssz2-bucket/ios");
     }
  
@@ -51,8 +51,8 @@ namespace JQEditor.Build
         PlistDocument plist = new PlistDocument();
         plist.ReadFromString(File.ReadAllText(listPath));
  
-        plist.root.SetString("MOBAppkey", "379144431697f");
-        plist.root.SetString("MOBAppSecret", "d47100e81a529abe6c842b3c452169e7");
+        plist.root.SetString("MOBAppkey", "appKey");
+        plist.root.SetString("MOBAppSecret", "appSecret");
         
         // 在“info”标签栏的“URL type“添加“URL scheme”,值为你在微信后台注册的应用程序的 AppID
         PlistElementArray urlArray = plist.root.CreateArray("CFBundleURLTypes");
