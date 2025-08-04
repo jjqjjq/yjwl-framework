@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using JQCore;
 using JQCore.tFileSystem;
 using JQEditor.MainSubPackage;
 using JQEditor.Other;
+using JQCore;
 using JQCore.tCfg;
 using UnityEditor;
 using UnityEngine;

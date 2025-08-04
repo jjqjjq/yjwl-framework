@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace JQCore
+namespace JQAppStart.tLuancher
 {
     public class ShaderManager : JQSingleton<ShaderManager>
     {

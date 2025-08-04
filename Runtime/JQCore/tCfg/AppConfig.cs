@@ -10,6 +10,7 @@ using JQCore.tLog;
 using JQCore.tUtil;
 using UnityEngine;
 using UnityEngine.Networking;
+using WeChatWASM;
 
 namespace JQCore.tCfg
 {

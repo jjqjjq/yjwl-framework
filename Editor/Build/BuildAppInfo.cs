@@ -1,6 +1,6 @@
 ﻿using System;
-using JQCore;
 using JQCore.tUtil;
+using JQCore;
 using JQCore.tCfg;
 using UnityEditor;
 using UnityEngine;

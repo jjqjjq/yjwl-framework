@@ -1,6 +1,6 @@
-﻿using JQCore;
-using JQEditor.Build;
+﻿using JQEditor.Build;
 using JQEditor.Other;
+using JQCore;
 using UnityEditor;
 using UnityEngine;
 

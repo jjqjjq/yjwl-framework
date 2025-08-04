@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
+using ET;
 using JQCore.ECS;
 using JQCore.tLog;
-using JQCore.tPool;
-using UnityEngine.Pool;
 
 namespace JQFramework.ECS
 {
@@ -59,7 +58,7 @@ namespace JQFramework.ECS
             if (entity == null) return;
             _entityList.Remove(entity);
             entity.onReset();
-            JQObjectPool<JQEntity>.Instance.Release(entity);
+            ObjectPool.Instance.Recycle(entity);
             _listChange = true;
         }
 
@@ -129,7 +128,7 @@ namespace JQFramework.ECS
             {
                 JQEntity entity = _entityList[i];
                 entity.onReset();
-                JQObjectPool<JQEntity>.Instance.Release(entity);
+                ObjectPool.Instance.Recycle(entity);
             }
             _tempList.Clear();
             _entityList.Clear();
