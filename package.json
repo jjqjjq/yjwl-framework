@@ -8,5 +8,10 @@
 	"author": {
 		"name": "YJWL Games",
 		"url": "http://www.youjoyfuture.cn/"
+	},
+	"dependencies": {
+		"com.unity.scriptablebuildpipeline": "1.20.2",
+		"com.tuyoogame.yooasset": "1.5.7",
+		"com.unity.nuget.newtonsoft-json": "3.2.1"
 	}
 }
