@@ -1,0 +1,49 @@
+//这是一个自动生成的代码，不要改它噢  模板在Assets/Editor/JQEditor/Mvc/ExtraViewTemplate.txt
+using JQCore.tRes;
+#if TextMeshPro
+using TMPro;
+#endif
+using JQFramework.tUGUI;
+using JQFramework.tUtil;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace JQGame.MVC.Module
+{
+    public partial class $viewClassName$
+    {
+        #region 属性
+		
+$viewAttr$
+
+        #endregion
+
+
+        #region 绑定代码
+
+
+        protected override void OnBindAttr()
+        {
+$onBindAttr$
+        }
+
+
+
+
+        protected override void OnUnBindAttr()
+        {
+$onUnBindAttr$
+        }
+
+        #endregion
+
+        //为避免生成的代码和业务代码混合，将下列代码复制到实际界面类中
+        #region 同步区
+		
+$eventFunc$        
+
+        #endregion
+        
+
+    }
+}
