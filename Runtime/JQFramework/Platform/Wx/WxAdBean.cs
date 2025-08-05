@@ -3,7 +3,7 @@ using System;
 using JQCore.tLog;
 using WeChatWASM;
 
-namespace JQAppStart.Platform
+namespace JQFramework.Platform
 {
     public class WxAdBean
     {

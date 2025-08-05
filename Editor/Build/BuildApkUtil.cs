@@ -133,7 +133,13 @@ namespace JQEditor.Build
                 string sysCfgFileName = BuildAppInfo.sysCfgType.ToString();
                 config.CDN = $"{BuildAppInfo.CDN}/{sysCfgFileName}/CDN/{PathUtil.platformName}/v{BuildAppInfo.version}";
             }
-
+            config.appId = BuildAppInfo.AppId;
+            config.wasmSubFramework = WasmSubFramework.WebGL;
+            config.buildOptions = _buildOptions;
+            config.isDevBuild = BuildAppInfo.isDevelop;
+            config.version = BuildAppInfo.version;
+            config.webglPackagePath = BuildTargetPath();
+            config.publishType = PublishType.AndroidWebGLWithIOS;
             EditorUtility.SetDirty(config);
 #endif
         }
@@ -432,13 +438,9 @@ namespace JQEditor.Build
             }
 #endif
 #if SDK_DOUYIN
-            config.wasmSubFramework = WasmSubFramework.WebGL;
-            config.webGLOutputDir = BuildTargetPath();
-            config.buildOptions = _buildOptions;
-            config.isDevBuild = BuildAppInfo.isDevelop;
-            config.version = BuildAppInfo.version;
-            config.webglPackagePath = BuildTargetPath();
-            config.publishType = PublishType.AndroidWebGLWithIOS;
+            string outputPath = BuildTargetPath();
+            config.webGLOutputDir = outputPath;
+            JQFileUtil.CreateDirectory(outputPath);
             BuildManager.Build(Framework.Wasm, false);
 #endif
         }

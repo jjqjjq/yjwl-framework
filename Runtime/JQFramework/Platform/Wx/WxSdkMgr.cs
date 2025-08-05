@@ -21,10 +21,10 @@ using WeChatWASM;
 #endif
 using SystemInfo = UnityEngine.Device.SystemInfo;
 
-namespace JQAppStart.Platform
+namespace JQFramework.Platform
 {
 #if SDK_WEIXIN
-    public class WXSdkMgr : ISdkMgr
+    public class WxSdkMgr : ISdkMgr
     {
         private WXFileSystemManager _wxFileSystemManager;
         private WriteFileParam _writeFileParam;

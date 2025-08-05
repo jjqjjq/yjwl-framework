@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using JQAppStart.Platform.Android;
 using JQCore;
 using JQCore.tCfg;
 using JQCore.tLog;
@@ -11,7 +10,7 @@ using JQFramework;
 using LitJson;
 using UnityEngine;
 
-namespace JQAppStart.Platform
+namespace JQFramework.Platform
 {
     public class NoneSdkMgr : BaseSdkMgr, ISdkMgr
     {

@@ -84,7 +84,7 @@ namespace JQEditor.Build
 
         public static string resPath
         {
-            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.resPath", "E:/work/package/");
+            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.resPath", "E:/work/package");
             set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.resPath", value);
         }
 

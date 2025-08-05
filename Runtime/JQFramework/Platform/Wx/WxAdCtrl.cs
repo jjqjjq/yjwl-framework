@@ -6,7 +6,7 @@ using JQCore.tString;
 using UnityEngine.Profiling;
 using WeChatWASM;
 
-namespace JQAppStart.Platform
+namespace JQFramework.Platform
 {
     public class WxAdCtrl : IAdCtrl
     {

@@ -11,7 +11,7 @@ namespace JQEditor.Build
         public override void build(Action endAction)
         {
             base.build(endAction);
-#if SDK_WEIXIN      
+#if UNITY_WEBGL      
             BuildApkUtil.uploadToCDN(exeEndAction);
 #endif
         }

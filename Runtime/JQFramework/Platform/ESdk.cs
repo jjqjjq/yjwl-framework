@@ -1,4 +1,4 @@
-﻿namespace AppStart.framework.Sdk
+﻿namespace JQFramework.Platform
 {
     
     public static class ESdk

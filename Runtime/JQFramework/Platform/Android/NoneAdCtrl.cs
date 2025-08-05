@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JQCore;
 
-namespace JQAppStart.Platform.Android
+namespace JQFramework.Platform
 {
     public class NoneAdCtrl : IAdCtrl
     {

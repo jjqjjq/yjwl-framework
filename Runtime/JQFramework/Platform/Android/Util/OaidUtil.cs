@@ -1,7 +1,7 @@
 ﻿using JQCore.tLog;
 using UnityEngine;
 
-namespace JQAppStart.Platform.Android.Util
+namespace JQFramework.Platform
 {
 #if UNITY_ANDROID
     public static class OaidUtil

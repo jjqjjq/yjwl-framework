@@ -47,7 +47,13 @@ namespace JQEditor.Build
 
         private static void WebPlatformSetting()
         {
-            EditorGUILayout.LabelField("小游戏配置", EditorStyle.headGuiStyle);
+#if SDK_WEIXIN
+            EditorGUILayout.LabelField("抖音小游戏配置", EditorStyle.headGuiStyle);
+#endif
+#if SDK_DOUYIN
+            EditorGUILayout.LabelField("微信小游戏配置", EditorStyle.headGuiStyle);
+#endif
+
             GUILayout.Space(3f);
 #if UNITY_WEBGL
             GUILayout.BeginHorizontal();

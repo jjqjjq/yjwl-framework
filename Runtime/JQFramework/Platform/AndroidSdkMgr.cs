@@ -16,7 +16,7 @@ using JQFramework.tMVC;
 using UnityEngine.Android;
 #endif
 
-namespace JQAppStart.Platform
+namespace JQFramework.Platform
 {
 #if UNITY_ANDROID
     public class AndroidSdkMgr :BaseSdkMgr, ISdkMgr
