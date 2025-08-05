@@ -105,29 +105,6 @@ namespace JQEditor.Build
 
         private static int _currIndex;
 
-
-        private static void Template()
-        {
-            EditorGUILayout.LabelField("配置模板", EditorStyle.headGuiStyle);
-            GUILayout.Space(3f);
-            GUILayout.BeginVertical("Box");
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("性能调试包"))
-            {
-                BuildAppInfo.isDevelop = true;
-                BuildAppInfo.platform = "none";
-            }
-
-            if (GUILayout.Button("平台包"))
-            {
-                BuildAppInfo.isDevelop = false;
-                BuildAppInfo.platform = "Apple";
-            }
-
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-        }
-
         private static void stepGUI(BuildBase buildBase)
         {
             GUILayout.BeginHorizontal();
@@ -271,8 +248,6 @@ namespace JQEditor.Build
 
         public static void OnGUI()
         {
-            Template();
-
             GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
             BuildButton();
             BuildResButton();

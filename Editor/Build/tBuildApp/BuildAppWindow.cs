@@ -10,6 +10,7 @@ using UnityEngine;
 #if SDK_WEIXIN
 using WeChatWASM;
 #endif
+
 namespace JQEditor.Build
 {
     public class BuildAppWindow : EditorWindow
@@ -18,8 +19,7 @@ namespace JQEditor.Build
         private int _sceneIndex;
 
         private Vector2 scrollViewPos = Vector2.zero;
-       
-        
+
 
         private void OnBecameVisible()
         {
@@ -37,9 +37,87 @@ namespace JQEditor.Build
             GUILayout.Space(3f);
 
             thisGUI();
+            WebPlatformSetting();
+            Template();
 
             BuildApp.OnGUI();
             EditorGUILayout.EndScrollView();
+        }
+
+
+        private static void WebPlatformSetting()
+        {
+            EditorGUILayout.LabelField("小游戏配置", EditorStyle.headGuiStyle);
+            GUILayout.Space(3f);
+#if UNITY_WEBGL
+            GUILayout.BeginHorizontal();
+            BuildAppInfo.AppId =
+                EditorGUILayout.TextField("AppId", BuildAppInfo.AppId, GUILayout.MinWidth(100f));
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            BuildAppInfo.useLocalCDN =
+                EditorGUILayout.Toggle("UseLocalCDN", BuildAppInfo.useLocalCDN, GUILayout.MinWidth(100f));
+            GUILayout.EndHorizontal();
+
+            if (BuildAppInfo.useLocalCDN)
+            {
+                GUILayout.BeginHorizontal();
+                BuildAppInfo.LocalCDN =
+                    EditorGUILayout.TextField("本地CDN域名", BuildAppInfo.LocalCDN, GUILayout.MinWidth(100f));
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                BuildAppInfo.LocalCDNFloder =
+                    EditorGUILayout.TextField("本地CDN路径", BuildAppInfo.LocalCDNFloder, GUILayout.MinWidth(100f));
+                GUILayout.EndHorizontal();
+            }
+            else
+            {
+                GUILayout.BeginHorizontal();
+                BuildAppInfo.CDN = EditorGUILayout.TextField("CDN域名", BuildAppInfo.CDN, GUILayout.MinWidth(100f));
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.BeginHorizontal();
+            BuildAppInfo.LocalCfgFloder =
+                EditorGUILayout.TextField("配置表路径", BuildAppInfo.LocalCfgFloder, GUILayout.MinWidth(100f));
+            if (!BuildAppInfo.useLocalCDN)
+            {
+                if (GUILayout.Button("上传配置", GUILayout.MaxWidth(204f))) BuildApkUtil.uploadCfgToCDN(null);
+            }
+
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+#if SDK_WEIXIN
+            BuildAppInfo.WxCloudFunctionFloder =
+ EditorGUILayout.TextField("微信云开发", BuildAppInfo.WxCloudFunctionFloder, GUILayout.MinWidth(100f));
+            if (GUILayout.Button("WX->U3D", GUILayout.MaxWidth(100f))) BuildApkUtil.copyWxCloudFunction(false, null);
+            if (GUILayout.Button("U3D->WX", GUILayout.MaxWidth(100f))) BuildApkUtil.copyWxCloudFunction(true, null);
+#endif
+            GUILayout.EndHorizontal();
+#endif
+        }
+
+        private static void Template()
+        {
+            EditorGUILayout.LabelField("配置模板", EditorStyle.headGuiStyle);
+            GUILayout.Space(3f);
+            GUILayout.BeginVertical("Box");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("性能调试包"))
+            {
+                BuildAppInfo.isDevelop = true;
+                BuildAppInfo.platform = "none";
+            }
+
+            if (GUILayout.Button("平台包"))
+            {
+                BuildAppInfo.isDevelop = false;
+                BuildAppInfo.platform = "Apple";
+            }
+
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
 
         [MenuItem("YjwlWindows/BuildApp")]
@@ -128,12 +206,6 @@ namespace JQEditor.Build
 
                 GUILayout.EndHorizontal();
             }
-#if SDK_WEIXIN
-            GUILayout.BeginHorizontal();
-            BuildAppInfo.useLocalCDN =
-                EditorGUILayout.Toggle("UseLocalCDN", BuildAppInfo.useLocalCDN, GUILayout.MinWidth(100f));
-            GUILayout.EndHorizontal();
-#endif
 
 #if HYBRIDCLR
             if (SettingsUtil.Enable != BuildAppInfo.HybridCLR)
@@ -185,40 +257,6 @@ namespace JQEditor.Build
 
             GUILayout.EndHorizontal();
 
-#if SDK_WEIXIN
-            if (BuildAppInfo.useLocalCDN)
-            {
-                GUILayout.BeginHorizontal();
-                BuildAppInfo.LocalCDN =
-                    EditorGUILayout.TextField("本地CDN域名", BuildAppInfo.LocalCDN, GUILayout.MinWidth(100f));
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                BuildAppInfo.LocalCDNFloder =
-                    EditorGUILayout.TextField("CDN本地路径", BuildAppInfo.LocalCDNFloder, GUILayout.MinWidth(100f));
-                GUILayout.EndHorizontal();
-                
-            }
-            else
-            {
-                GUILayout.BeginHorizontal();
-                BuildAppInfo.CDN = EditorGUILayout.TextField("CDN域名", BuildAppInfo.CDN, GUILayout.MinWidth(100f));
-                GUILayout.EndHorizontal();
-            }
-            GUILayout.BeginHorizontal();
-            BuildAppInfo.LocalCfgFloder =
-                EditorGUILayout.TextField("Cfg本地路径", BuildAppInfo.LocalCfgFloder, GUILayout.MinWidth(100f));
-            if (!BuildAppInfo.useLocalCDN)
-            {
-                if (GUILayout.Button("上传配置", GUILayout.MaxWidth(204f))) BuildApkUtil.uploadCfgToCDN(null);
-            }
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            BuildAppInfo.WxCloudFunctionFloder = EditorGUILayout.TextField("微信云开发", BuildAppInfo.WxCloudFunctionFloder, GUILayout.MinWidth(100f));
-            if (GUILayout.Button("WX->U3D", GUILayout.MaxWidth(100f))) BuildApkUtil.copyWxCloudFunction(false, null);
-            if (GUILayout.Button("U3D->WX", GUILayout.MaxWidth(100f))) BuildApkUtil.copyWxCloudFunction(true, null);
-            GUILayout.EndHorizontal();
-#endif
 
             GUILayout.BeginHorizontal();
             BuildAppInfo.PackageVersion = EditorGUILayout.TextField("PackageVersion", BuildAppInfo.PackageVersion,
@@ -273,6 +311,5 @@ namespace JQEditor.Build
 
             //========================
         }
-
     }
 }

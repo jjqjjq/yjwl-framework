@@ -18,10 +18,14 @@ using JQEditor.MainSubPackage;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-#if SDK_WEIXIN
 using UnityEngine.SceneManagement;
+#if SDK_WEIXIN
 using WeChatWASM;
 #endif
+#if SDK_DOUYIN
+using TTSDK.Tool;
+#endif
+
 using Debug = UnityEngine.Debug;
 
 namespace JQEditor.Build
@@ -76,6 +80,23 @@ namespace JQEditor.Build
         }
 #endif
 
+#if SDK_DOUYIN
+
+        private static StarkBuilderSettings _config;
+        private static StarkBuilderSettings config
+        {
+            get
+            {
+                if (_config == null)
+                {
+                    _config = StarkBuilderSettings.LoadSettings();
+                }
+
+                return _config;
+            }
+        }
+#endif
+
         private static void setOption()
         {
             if (BuildAppInfo.isDevelop)
@@ -86,20 +107,31 @@ namespace JQEditor.Build
                 _buildOptions = BuildOptions.CompressWithLz4;
 
 #if SDK_WEIXIN
-
-
+            var projectConf = config.projectConf;
             if (BuildAppInfo.useLocalCDN)
             {
-                config.ProjectConf.CDN = $"{BuildAppInfo.LocalCDN}/{BuildAppInfo.ProductNick}";
+                projectConf.CDN = $"{BuildAppInfo.LocalCDN}/{BuildAppInfo.ProductNick}";
             }
             else
             {
                 string sysCfgFileName = BuildAppInfo.sysCfgType.ToString();
-                config.ProjectConf.CDN =
-                    $"{BuildAppInfo.CDN}/{sysCfgFileName}/CDN/{PathUtil.platformName}/v{BuildAppInfo.version}";
+                projectConf.CDN = $"{BuildAppInfo.CDN}/{sysCfgFileName}/CDN/{PathUtil.platformName}/v{BuildAppInfo.version}";
             }
 
             config.CompileOptions.DevelopBuild = BuildAppInfo.isDevelop;
+            EditorUtility.SetDirty(config);
+#endif
+
+#if SDK_DOUYIN
+            if (BuildAppInfo.useLocalCDN)
+            {
+                config.CDN = $"{BuildAppInfo.LocalCDN}/{BuildAppInfo.ProductNick}";
+            }
+            else
+            {
+                string sysCfgFileName = BuildAppInfo.sysCfgType.ToString();
+                config.CDN = $"{BuildAppInfo.CDN}/{sysCfgFileName}/CDN/{PathUtil.platformName}/v{BuildAppInfo.version}";
+            }
             EditorUtility.SetDirty(config);
 #endif
         }
@@ -122,11 +154,6 @@ namespace JQEditor.Build
                 case BuildTarget.WebGL:
                     buildTargetGroup = BuildTargetGroup.WebGL;
                     break;
-#if SDK_WEIXIN
-                // case BuildTarget.WeixinMiniGame:
-                //     buildTargetGroup = BuildTargetGroup.WeixinMiniGame;
-                //     break;
-#endif
             }
 
             return buildTargetGroup;
@@ -272,7 +299,7 @@ namespace JQEditor.Build
                 jsonObject.SetField("CDN", $"{BuildAppInfo.CDN}/{BuildAppInfo.sysCfgType}");
             }
 #endif
-#if SDK_WEIXIN //微信启动网络加载太慢了
+#if UNITY_WEBGL //微信启动网络加载太慢了
             Scene scene = EditorSceneManager.OpenScene($"Assets/Scenes/{BuildAppInfo.mainScene}");
             GameObject appStartGo = GameObject.Find("AppStart");
             AppStartParams appStartParams = appStartGo.GetComponent<AppStartParams>();
@@ -320,16 +347,8 @@ namespace JQEditor.Build
                     BuildInIOS(buildScenes);
                     break;
                 case BuildTarget.WebGL:
-                    // BuildInWebGl(buildScenes);
-#if SDK_WEIXIN
-                    BuildInWxMiniGame(buildScenes);
-#endif
+                    BuildInWebGL(buildScenes);
                     break;
-#if SDK_WEIXIN
-                // case BuildTarget.WeixinMiniGame:
-                //     BuildInWxMiniGame(buildScenes);
-                //     break;
-#endif
             }
 
             //加密：打包apk后处理
@@ -376,12 +395,19 @@ namespace JQEditor.Build
             OpenFolder(BuildAppInfo.resPath + "/web");
         }
 
-#if SDK_WEIXIN
-        private static void BuildInWxMiniGame(string[] buildScenes)
+#if UNITY_WEBGL
+
+        private static string BuildTargetPath()
         {
+            return $"{BuildAppInfo.resPath}/web/{BuildAppInfo.ProductNick}/{BuildAppInfo.sysCfgType}/{BuildAppInfo.version}";
+        }
+
+        private static void BuildInWebGL(string[] buildScenes)
+        {
+#if SDK_WEIXIN
             // JQFileUtil.DeleteDirectory($"{config.ProjectConf.DST}");
-            config.ProjectConf.DST =
-                $"{BuildAppInfo.resPath}/web/{BuildAppInfo.ProductNick}/{BuildAppInfo.sysCfgType}/{BuildAppInfo.version}";
+            config.ProjectConf.DST = BuildTargetPath();
+               
             config.ProjectConf.projectName = BuildAppInfo.ProductName;
             List<EditorBuildSettingsScene> sceneList = new List<EditorBuildSettingsScene>();
             foreach (var scenePath in buildScenes)
@@ -398,6 +424,17 @@ namespace JQEditor.Build
             {
                 Debug.LogError("转换失败");
             }
+#endif
+#if SDK_DOUYIN
+            config.webGLOutputDir = BuildTargetPath();
+            List<EditorBuildSettingsScene> sceneList = new List<EditorBuildSettingsScene>();
+            foreach (var scenePath in buildScenes)
+            {
+                sceneList.Add(new EditorBuildSettingsScene(scenePath, true));
+            }
+            EditorBuildSettings.scenes = sceneList.ToArray();
+            
+#endif
         }
 
         public static void uploadCfgToCDN(Action endAction)
@@ -452,7 +489,7 @@ namespace JQEditor.Build
 
         private static void uploadToLocalCDNFloader(Action endAction)
         {
-            string buildPath = $"{config.ProjectConf.DST}/webgl";
+            string buildPath = $"{BuildTargetPath()}/webgl";
             string webPath = $"{BuildAppInfo.LocalCDNFloder}/{BuildAppInfo.ProductNick}";
             JQFileUtil.DeleteDirectory(webPath);
             JQFileUtil.CopyDirectory(buildPath, webPath);
@@ -478,14 +515,15 @@ namespace JQEditor.Build
         private static List<OssUploadBean> GetAllPackage()
         {
             var files = new List<string>();
-            JQFileUtil.getAllFile(ref files, $"{config.ProjectConf.DST}/webgl", uploadFilter, true);
+            string targetPath = BuildTargetPath();
+            JQFileUtil.getAllFile(ref files, $"{targetPath}/webgl", uploadFilter, true);
             List<OssUploadBean> ossUploadBeans = new List<OssUploadBean>();
 
             for (int i = 0; i < files.Count; i++)
             {
                 string fileFullPath = files[i].Replace("\\", "/");
-                string fileSubPath = fileFullPath.Replace($"{config.ProjectConf.DST}/webgl/", "");
-                (string ossPath, string localPath) = getOssPackagePath($"{config.ProjectConf.DST}/webgl", fileSubPath);
+                string fileSubPath = fileFullPath.Replace($"{targetPath}/webgl/", "");
+                (string ossPath, string localPath) = getOssPackagePath($"{targetPath}/webgl", fileSubPath);
                 Debug.Log(
                     $"fileFullPath：{fileFullPath} \nfileSubPath：{fileSubPath} \nossPath：{ossPath} \nlocalPath：{localPath}");
                 FileInfo fileInfo = new FileInfo(localPath);
@@ -511,39 +549,10 @@ namespace JQEditor.Build
 
         private static void uploadToWebCDN(Action endAction)
         {
-            //auto streaming 未开启
-            if (!WXConvertCore.IsInstantGameAutoStreaming())
-            {
-                List<OssUploadBean> ossUploadBeans = GetAllPackage();
-                Debug.Log("上传文件：" + ossUploadBeans.Count);
-                OssUploadTask ossUploadTask = new OssUploadTask(ossUploadBeans);
-                ossUploadTask.Run(endAction);
-            }
-            else
-            {
-#if (UNITY_WEBGL || SDK_WEIXIN)
-                // 上传首包资源
-                if (!string.IsNullOrEmpty(WXConvertCore.FirstBundlePath) && File.Exists(WXConvertCore.FirstBundlePath))
-                {
-                    // if (Unity.InstantGame.IGBuildPipeline.UploadWeChatDataFile(WXConvertCore.FirstBundlePath))
-                    if (true)
-                    {
-                        Debug.Log("转换完成并成功上传首包资源");
-                    }
-                    else
-                    {
-                        Debug.LogError("首包资源上传失败，请检查网络以及Auto Streaming配置是否正确。");
-                    }
-                }
-                else
-                {
-                    Debug.LogError("转换失败");
-                }
-#else
-                Debug.Log($"转换完成");
-#endif
-                endAction();
-            }
+            List<OssUploadBean> ossUploadBeans = GetAllPackage();
+            Debug.Log("上传文件：" + ossUploadBeans.Count);
+            OssUploadTask ossUploadTask = new OssUploadTask(ossUploadBeans);
+            ossUploadTask.Run(endAction);
         }
 #endif
 

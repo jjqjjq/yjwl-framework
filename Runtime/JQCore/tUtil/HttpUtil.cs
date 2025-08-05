@@ -178,7 +178,7 @@ namespace JQCore.tUtil
                 }
             }
         }
-#if !SDK_WEIXIN
+#if !UNITY_WEBGL
         public static void RealStepLog(string url)
         {
             JQCoroutineHandler.Start(realStepLog(url));
