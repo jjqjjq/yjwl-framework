@@ -1,3 +1,4 @@
+#if SDK_WEIXIN
 using System;
 using System.Collections.Generic;
 using JQCore;
@@ -101,3 +102,4 @@ namespace JQAppStart.Platform
         }
     }
 }
+#endif

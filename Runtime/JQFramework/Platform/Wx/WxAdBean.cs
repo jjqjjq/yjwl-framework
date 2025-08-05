@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if SDK_WEIXIN
+using System;
 using JQCore.tLog;
 using WeChatWASM;
 
@@ -144,3 +145,4 @@ namespace JQAppStart.Platform
         }
     }
 }
+#endif
