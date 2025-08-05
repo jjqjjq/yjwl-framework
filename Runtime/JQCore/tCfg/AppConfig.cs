@@ -16,7 +16,12 @@ namespace JQCore.tCfg
     public enum SdkPlatform
     {
         none = 0, //空包
+#if UNITY_WEBGL
+        weixin = 1,
+        douyin = 2,
+#else
         taptap = 1, //taptap
+#endif
     }
 
     public static class AppConfig
@@ -56,7 +61,7 @@ namespace JQCore.tCfg
             JQLog.Log("初始化系统配置syscfg.json完成");
             callBack();
         }
-        
+
 
         public static string routerInfoPath
         {

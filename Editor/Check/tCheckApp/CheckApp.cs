@@ -4,6 +4,7 @@ using System.Reflection;
 using JQEditor.Check;
 using JQEditor.Check.tCheckApp;
 using JQCore.tSingleton;
+using UnityEditor.PackageManager;
 
 namespace JQEditor.Check.tCheckApp
 {

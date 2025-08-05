@@ -190,9 +190,9 @@ namespace JQEditor.Build
             }
 
             //sdk平台宏设置
-            RemoveDefineSymbols("PLATFORM_", true);
+            RemoveDefineSymbols("SDK_", true);
             if (BuildAppInfo.sdkPlatform == SdkPlatform.none) return;
-            var type = "PLATFORM_" + BuildAppInfo.sdkPlatform.ToString().ToUpper();
+            var type = "SDK_" + BuildAppInfo.sdkPlatform.ToString().ToUpper();
             AddDefineSymbols(type);
         }
 
