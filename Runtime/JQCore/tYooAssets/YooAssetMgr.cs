@@ -247,8 +247,7 @@ namespace JQCore.tYooAssets
         {
             public bool QueryStreamingAssets(string packageName, string fileName)
             {
-                // StreamingAssetsHelper.cs是太空战机里提供的一个查询脚本。
-                return true; //todo: 实现检查StreamingAssets文件是否存在
+                return Sys.sdkMgr.IsStreamingAssetsExist();
             }
         }
 

@@ -7,6 +7,7 @@ namespace JQCore
 {
     public interface ISdkMgr
     {
+        bool IsStreamingAssetsExist();
         public SdkPlatform GetPlatform();
         bool NeedShowSubscribeTips(string tmplId);
         void RequestSubscribeMessage(string[] tmplIds);

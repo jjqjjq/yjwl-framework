@@ -131,6 +131,11 @@ namespace JQFramework.Platform
             // }
         }
 
+        public bool IsStreamingAssetsExist()
+        {
+            return true;
+        }
+
         public void GC()
         {
             MemoryUnloader.instance.addUnloadTask(null);

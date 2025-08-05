@@ -140,6 +140,7 @@ namespace JQEditor.Build
             config.version = BuildAppInfo.version;
             config.webglPackagePath = BuildTargetPath();
             config.publishType = PublishType.AndroidWebGLWithIOS;
+            config.iOSPerformancePlus = true;
             EditorUtility.SetDirty(config);
 #endif
         }
