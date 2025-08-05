@@ -50,7 +50,7 @@ namespace JQEditor.Build
             get => EditorPrefs.GetBool(Application.dataPath + "BuildAppInfo.IL2CPP", true);
             set => EditorPrefs.SetBool(Application.dataPath + "BuildAppInfo.IL2CPP", value);
         }
-        
+
         public static bool useLocalCDN
         {
             get => EditorPrefs.GetBool(Application.dataPath + "BuildAppInfo.useLocalCDN", true);
@@ -87,11 +87,18 @@ namespace JQEditor.Build
             get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.resPath", "E:/work/package/");
             set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.resPath", value);
         }
-        
+
         public static string AppId
         {
-            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.AppId", "");
-            set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.AppId", value);
+#if SDK_DOUYIN
+
+            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.AppId_Douyin", "");
+            set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.AppId_Douyin", value);
+#endif
+#if SDK_WEIXIN
+            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.AppId_Weixin", "");
+            set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.AppId_Weixin", value);
+#endif
         }
 
         public static string identifier
@@ -105,7 +112,7 @@ namespace JQEditor.Build
             get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.productName", "项目名称");
             set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.productName", value);
         }
-        
+
         public static string ProductNick
         {
             get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.productNick", "productName");
@@ -114,7 +121,8 @@ namespace JQEditor.Build
 
         public static string aliyunOSS_endpoint
         {
-            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.aliyunOSS_endpoint", "https://oss-cn-guangzhou.aliyuncs.com");
+            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.aliyunOSS_endpoint",
+                "https://oss-cn-guangzhou.aliyuncs.com");
             set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.aliyunOSS_endpoint", value);
         }
 
@@ -154,31 +162,33 @@ namespace JQEditor.Build
             get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.LocalCDN", "http://127.0.0.1");
             set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.LocalCDN", value);
         }
-        
+
         public static string LocalCDNFloder
         {
             get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.LocalCDNFloder", "E:\\wamp64\\www");
             set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.LocalCDNFloder", value);
         }
-        
+
         public static string WxCloudFunctionFloder
         {
-            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.WxCloudFunctionFloder1", $"{Application.dataPath}\\..\\WXCloudFunction\\cloudfunctions");
+            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.WxCloudFunctionFloder1",
+                $"{Application.dataPath}\\..\\WXCloudFunction\\cloudfunctions");
             set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.WxCloudFunctionFloder1", value);
         }
-        
+
         public static string LocalCfgFloder
         {
-            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.LocalCfgFloder", "E:\\work\\yjwl-p2\\P2-Server\\Config\\Json\\c");
+            get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.LocalCfgFloder",
+                "E:\\work\\yjwl-p2\\P2-Server\\Config\\Json\\c");
             set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.LocalCfgFloder", value);
         }
-        
+
         public static string CDN
         {
             get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.CDN", "https://cdn.jijianquan.cn");
             set => EditorPrefs.SetString(Application.dataPath + "BuildAppInfo.CDN", value);
         }
-        
+
         public static string PackageVersion
         {
             get => EditorPrefs.GetString(Application.dataPath + "BuildAppInfo.PackageVersion", GetBuildPackageVersion());
@@ -232,7 +242,8 @@ namespace JQEditor.Build
         /// </summary>
         public static string sysCfgPath
         {
-            get => EditorPrefs.GetString("BuildAppInfo.sysCfgPath", Application.dataPath + $"{PathUtil.RES_FOLDER}/Build/sysCfgs");
+            get => EditorPrefs.GetString("BuildAppInfo.sysCfgPath",
+                Application.dataPath + $"{PathUtil.RES_FOLDER}/Build/sysCfgs");
             set => EditorPrefs.SetString("BuildAppInfo.sysCfgPath", value);
         }
 

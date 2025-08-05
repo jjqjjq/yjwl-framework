@@ -24,6 +24,7 @@ using WeChatWASM;
 #endif
 #if SDK_DOUYIN
 using TTSDK.Tool;
+using TTSDK.Tool.API;
 #endif
 
 using Debug = UnityEngine.Debug;
@@ -107,7 +108,7 @@ namespace JQEditor.Build
                 _buildOptions = BuildOptions.CompressWithLz4;
 
 #if SDK_WEIXIN
-            var projectConf = config.projectConf;
+            var projectConf = config.ProjectConf;
             if (BuildAppInfo.useLocalCDN)
             {
                 projectConf.CDN = $"{BuildAppInfo.LocalCDN}/{BuildAppInfo.ProductNick}";
@@ -132,6 +133,7 @@ namespace JQEditor.Build
                 string sysCfgFileName = BuildAppInfo.sysCfgType.ToString();
                 config.CDN = $"{BuildAppInfo.CDN}/{sysCfgFileName}/CDN/{PathUtil.platformName}/v{BuildAppInfo.version}";
             }
+
             EditorUtility.SetDirty(config);
 #endif
         }
@@ -217,10 +219,10 @@ namespace JQEditor.Build
             }
 
             //sdk平台宏设置
-            RemoveDefineSymbols("SDK_", true);
-            if (BuildAppInfo.sdkPlatform == SdkPlatform.none) return;
-            var type = "SDK_" + BuildAppInfo.sdkPlatform.ToString().ToUpper();
-            AddDefineSymbols(type);
+            // RemoveDefineSymbols("SDK_", true);
+            // if (BuildAppInfo.sdkPlatform == SdkPlatform.none) return;
+            // var type = "SDK_" + BuildAppInfo.sdkPlatform.ToString().ToUpper();
+            // AddDefineSymbols(type);
         }
 
         public static void AddDefineSymbols(string symbol)
@@ -399,16 +401,16 @@ namespace JQEditor.Build
 
         private static string BuildTargetPath()
         {
-            return $"{BuildAppInfo.resPath}/web/{BuildAppInfo.ProductNick}/{BuildAppInfo.sysCfgType}/{BuildAppInfo.version}";
+#if SDK_WEIXIN
+            return $"{BuildAppInfo.resPath}/weixin/{BuildAppInfo.ProductNick}/{BuildAppInfo.sysCfgType}/{BuildAppInfo.version}";
+#endif
+#if SDK_DOUYIN
+            return $"{BuildAppInfo.resPath}/douyin/{BuildAppInfo.ProductNick}/{BuildAppInfo.sysCfgType}/{BuildAppInfo.version}";
+#endif
         }
 
         private static void BuildInWebGL(string[] buildScenes)
         {
-#if SDK_WEIXIN
-            // JQFileUtil.DeleteDirectory($"{config.ProjectConf.DST}");
-            config.ProjectConf.DST = BuildTargetPath();
-               
-            config.ProjectConf.projectName = BuildAppInfo.ProductName;
             List<EditorBuildSettingsScene> sceneList = new List<EditorBuildSettingsScene>();
             foreach (var scenePath in buildScenes)
             {
@@ -416,6 +418,10 @@ namespace JQEditor.Build
             }
 
             EditorBuildSettings.scenes = sceneList.ToArray();
+#if SDK_WEIXIN
+            // JQFileUtil.DeleteDirectory($"{config.ProjectConf.DST}");
+            config.ProjectConf.DST = BuildTargetPath();
+            config.ProjectConf.projectName = BuildAppInfo.ProductName;
             if (WXConvertCore.DoExport() == WXConvertCore.WXExportError.SUCCEED)
             {
                 Debug.Log("转换完成");
@@ -426,14 +432,14 @@ namespace JQEditor.Build
             }
 #endif
 #if SDK_DOUYIN
+            config.wasmSubFramework = WasmSubFramework.WebGL;
             config.webGLOutputDir = BuildTargetPath();
-            List<EditorBuildSettingsScene> sceneList = new List<EditorBuildSettingsScene>();
-            foreach (var scenePath in buildScenes)
-            {
-                sceneList.Add(new EditorBuildSettingsScene(scenePath, true));
-            }
-            EditorBuildSettings.scenes = sceneList.ToArray();
-            
+            config.buildOptions = _buildOptions;
+            config.isDevBuild = BuildAppInfo.isDevelop;
+            config.version = BuildAppInfo.version;
+            config.webglPackagePath = BuildTargetPath();
+            config.publishType = PublishType.AndroidWebGLWithIOS;
+            BuildManager.Build(Framework.Wasm, false);
 #endif
         }
 

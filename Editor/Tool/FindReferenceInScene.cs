@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+
 using System.Collections.Generic;
 using JQCore.tUtil;
 using UnityEditor;
@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace JQEditor.Tool
 {
+#if UNITY_EDITOR
     /// <summary>
     /// 显示某个场景里所有相关的脚本
     /// 点击其中一个脚本获得挂载这个脚本的物体或预制体
