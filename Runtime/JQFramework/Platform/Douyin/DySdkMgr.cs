@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ET.ETFramework.Model.Client.Game;
 using JQCore;
 using JQCore.tCfg;
 using JQCore.tLog;
+#if SDK_DOUYIN
 using TTSDK;
+#endif
 
 namespace JQFramework.Platform
 {
@@ -30,9 +33,9 @@ namespace JQFramework.Platform
 
         private void InitDir()
         {
-            // Mkdir("ttfile://user/StreamingAssets");
-            // Mkdir("ttfile://user/StreamingAssets/yoo");
-            // Mkdir("ttfile://user/StreamingAssets/yoo/asset");
+            Mkdir("ttfile://user/StreamingAssets");
+            Mkdir("ttfile://user/StreamingAssets/yoo");
+            Mkdir("ttfile://user/StreamingAssets/yoo/asset");
         }
 
         public bool IsStreamingAssetsExist()
@@ -140,7 +143,13 @@ namespace JQFramework.Platform
 
         public void ReportEvent<T>(string eventId, T data)
         {
-            // TT.ReportAnalytics<string>(eventId, data);
+            JQLog.LogWarning($"ReportEvent:{eventId} {data}");
+            //开通了再打开
+            // IReportEvent iReportEvent = data as IReportEvent;
+            // if (iReportEvent != null)
+            // {
+            //     TT.ReportAnalytics(eventId, iReportEvent.ToDictionary());
+            // }
         }
 
         public void GC()
@@ -192,7 +201,7 @@ namespace JQFramework.Platform
 
         public void SaveCloudDataAsync(string key)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void CheckIsAddedToMyMiniProgram(Action<bool> callback)

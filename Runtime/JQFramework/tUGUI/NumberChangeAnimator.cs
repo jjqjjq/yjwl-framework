@@ -16,6 +16,7 @@ namespace JQFramework
     {
 #if TextMeshPro
         public TextMeshProUGUI text;
+        
 #else
         public Text text;
 #endif

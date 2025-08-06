@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using JQCore.tLog;
+using TTSDK;
 #if SDK_WEIXIN
 using JQCore.tLog;
 using WeChatWASM;
@@ -7,16 +9,16 @@ using WeChatWASM;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace JQFramework.JQFramework.tUGUI
+namespace JQFramework.tUGUI
 {
     public class WXInputField : MonoBehaviour, IPointerClickHandler, IPointerExitHandler
     {
         public InputField input;
         private bool isShowKeyboard = false;
-        
+
         public void OnPointerClick(PointerEventData eventData)
         {
-#if !UNITY_EDITOR && SDK_WEIXIN
+#if UNITY_WEBGL && !UNITY_EDITOR
             JQLog.Log("OnPointerClick");
             ShowKeyboard();
 #endif
@@ -24,7 +26,7 @@ namespace JQFramework.JQFramework.tUGUI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-#if !UNITY_EDITOR && SDK_WEIXIN
+#if UNITY_WEBGL && !UNITY_EDITOR
             JQLog.Log("OnPointerExit");
             if (!input.isFocused)
             {
@@ -33,45 +35,73 @@ namespace JQFramework.JQFramework.tUGUI
 #endif
         }
 
-#if SDK_WEIXIN
-        public void OnInput(OnKeyboardInputListenerResult v)
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+#if SDK_DOUYIN
+        private void ShowKeyboard()
         {
-#if !UNITY_EDITOR && SDK_WEIXIN
-            JQLog.Log("onInput");
-            JQLog.Log(v.value);
+            if (!isShowKeyboard)
+            {
+                TT.ShowKeyboard(new TTKeyboard.ShowKeyboardOptions()
+                {
+                    defaultValue = "",
+                    confirmType = "go",
+                    confirmHold = false,
+                    maxLength = 20
+                });
+                TT.OnKeyboardConfirm += OnConfirm;
+                TT.OnKeyboardInput += OnInput;
+                TT.OnKeyboardComplete += OnComplete;
+                isShowKeyboard = true;
+            }
+        }
+
+        private void HideKeyboard()
+        {
+            if (isShowKeyboard)
+            {
+                TT.HideKeyboard();
+                //删除掉相关事件监听
+                TT.OnKeyboardConfirm -= OnConfirm;
+                TT.OnKeyboardInput -= OnInput;
+                TT.OnKeyboardComplete -= OnComplete;
+                isShowKeyboard = false;
+            }
+        }
+
+
+        private void OnInput(string v)
+        {
+            JQLog.Log("onInput:" + v);
             if (input.isFocused)
             {
-                input.text = v.value;
+                input.text = v;
             }
-#endif
         }
-        public void OnConfirm(OnKeyboardInputListenerResult v)
+
+        private void OnConfirm(string v)
         {
-#if !UNITY_EDITOR && SDK_WEIXIN
             // 输入法confirm回调
-            JQLog.Log("onConfirm");
-            JQLog.Log(v.value);
+            JQLog.Log("onConfirm:" + v);
             HideKeyboard();
-#endif
         }
 
-        public void OnComplete(OnKeyboardInputListenerResult v)
+        private void OnComplete(string v)
         {
-#if !UNITY_EDITOR && SDK_WEIXIN
             // 输入法complete回调
-            JQLog.Log("OnComplete");
-            JQLog.Log(v.value);
+            JQLog.Log("OnComplete:" + v);
             HideKeyboard();
-#endif
         }
+#endif
 
+#if SDK_WEIXIN
         private void ShowKeyboard()
         {
             if (!isShowKeyboard)
             {
                 WX.ShowKeyboard(new ShowKeyboardOption()
                 {
-                    defaultValue = "xxx",
+                    defaultValue = "",
                     maxLength = 20,
                     confirmType = "go"
                 });
@@ -96,6 +126,31 @@ namespace JQFramework.JQFramework.tUGUI
                 isShowKeyboard = false;
             }
         }
+
+
+        private void OnInput(OnKeyboardInputListenerResult v)
+        {
+            JQLog.Log("onInput:" + v.value);
+            if (input.isFocused)
+            {
+                input.text = v.value;
+            }
+        }
+
+        private void OnConfirm(OnKeyboardInputListenerResult v)
+        {
+            // 输入法confirm回调
+            JQLog.Log("onConfirm:" + v.value);
+            HideKeyboard();
+        }
+
+        private void OnComplete(OnKeyboardInputListenerResult v)
+        {
+            // 输入法complete回调
+            JQLog.Log("OnComplete:" + v.value);
+            HideKeyboard();
+        }
+#endif
 #endif
     }
 }

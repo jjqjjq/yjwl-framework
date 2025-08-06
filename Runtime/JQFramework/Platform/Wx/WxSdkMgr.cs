@@ -19,7 +19,6 @@ using Newtonsoft.Json;
 using UnityEngine;
 using WeChatWASM;
 #endif
-using SystemInfo = UnityEngine.Device.SystemInfo;
 
 namespace JQFramework.Platform
 {
@@ -37,7 +36,7 @@ namespace JQFramework.Platform
         private WxAdCtrl _wxAdCtrl;
         private bool _uploadFileFailed = false;
 
-        public WXSdkMgr(params object[] args)
+        public WxSdkMgr(params object[] args)
         {
             _cloudEnvId = args[0] as string;
             _writeFileParam = new WriteFileParam();
@@ -109,6 +108,11 @@ namespace JQFramework.Platform
         public void SetParam(string str, object obj)
         {
             throw new NotImplementedException();
+        }
+
+        public bool IsStreamingAssetsExist()
+        {
+            return true;
         }
 
         public SdkPlatform GetPlatform()

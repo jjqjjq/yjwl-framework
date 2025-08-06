@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if SDK_DOUYIN
+using System;
 using System.Collections.Generic;
 using JQCore;
 using JQCore.tLog;
@@ -108,3 +109,4 @@ namespace JQFramework.Platform
         }
     }
 }
+#endif

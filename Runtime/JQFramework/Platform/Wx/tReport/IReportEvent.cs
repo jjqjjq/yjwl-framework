@@ -2,7 +2,7 @@
 
 namespace ET.ETFramework.Model.Client.Game
 {
-    public interface IWxReportEvent
+    public interface IReportEvent
     {
         public Dictionary<string, string> ToDictionary();
     }

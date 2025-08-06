@@ -946,10 +946,11 @@ namespace JQEditor.Check
                         bindObj.obj = text;
                         needSynViewScript = true;
                     }
-
+#if YJWL_P3
                     ImageSolidColorOutline imageSolidColorOutline = text.gameObject.AddMissingComponent<ImageSolidColorOutline>();
                     imageSolidColorOutline.OutlineColor = Color.black;
                     imageSolidColorOutline.OutlineWidth = 3;
+#endif
                 }
             }
 
