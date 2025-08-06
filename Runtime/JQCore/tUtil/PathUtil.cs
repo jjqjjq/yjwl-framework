@@ -9,7 +9,9 @@ namespace JQCore.tUtil
         public static string DOWNLOAD_FOLDER = "res"; //热更新后的持久化目录
         public static string RES_FOLDER = "Art";
         public static string DLL_FOLDER = "Code";
+
         public static string CODE_DLL_LIB = "CodeDllLib.prefab";
+
         // public static string PACKAGE_NAME = "asset";
         public static string YOOASSET_PACKAGE_NAME = "asset";
 
@@ -26,8 +28,10 @@ namespace JQCore.tUtil
                     return "iphone";
 #elif UNITY_STANDALONE_WIN
                     return "windows";
-#elif UNITY_WEBGL
-                return "webgl";
+#elif SDK_WEIXIN
+                return "weixin";
+#elif SDK_DOUYIN
+                return "douyin";
 #endif
             }
         }
@@ -175,14 +179,14 @@ namespace JQCore.tUtil
         }
 
         #endregion
-        
-        
+
+
         public static void printGo(GameObject gameObject)
         {
             var fullName = getFullPath(gameObject);
             Debug.Log("fullPaht:" + fullName);
         }
-        
+
         public static string getFullPath(GameObject gameObject)
         {
             var nameStr = "";
