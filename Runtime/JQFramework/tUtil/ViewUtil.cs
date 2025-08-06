@@ -30,6 +30,7 @@ namespace JQFramework.tUtil
         //初始化分辨率
         public static void InitResolutionRatio()
         {
+#if !UNITY_WEBGL
             if (Sys.GAME_WIDTH > Sys.GAME_HEIGHT) //横屏
             {
                 Screen.orientation = ScreenOrientation.AutoRotation;
@@ -54,6 +55,8 @@ namespace JQFramework.tUtil
                     $"resizeBuff:  realWidthScale:{realWidthScale} --- realHeightScale:{realHeightScale}---屏幕整体缩放：{realScale}");
                 ScalableBufferManager.ResizeBuffers(realScale, realScale);
             }
+
+#endif
         }
 
 
@@ -215,6 +218,7 @@ namespace JQFramework.tUtil
                 itemList.Add(item);
                 return item;
             }
+
             return null;
         }
 

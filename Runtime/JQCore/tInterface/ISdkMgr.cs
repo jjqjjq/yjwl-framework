@@ -11,29 +11,29 @@ namespace JQCore
         public SdkPlatform GetPlatform();
         bool NeedShowSubscribeTips(string tmplId);
         void RequestSubscribeMessage(string[] tmplIds);
-        
+
         void StartAntiAddiction(string accountName);
 
         bool IsSubscribed(string tmplId);
-        
+
         void Logout();
 
         void AddTouchEnd(string type);
-        
+
         void RemoveTouchEnd(string type);
 
         void AddPermissions();
 
         bool IsNeedAddPermissions();
-        
+
         void InitAfterPermission();
 
         Task<bool> isLogined();
 
         string GetAccessToken();
-        
+
         (float, float, float, float) GetSafeAreaInfo();
-        
+
         void SetParam(string str, object obj);
 
         void ReportEvent<T>(string eventId, T data);
@@ -51,5 +51,11 @@ namespace JQCore
 
         void CheckIsAddedToMyMiniProgram(Action<bool> callback);
         void GetInviteCount(Action<int> action);
+
+#if SDK_DOUYIN
+        bool CanShowSideBar();
+        bool IsLocationSideBar();
+        void NavigateToSideBarScene();
+#endif
     }
 }

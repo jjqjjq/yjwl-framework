@@ -184,6 +184,25 @@ namespace JQFramework.Platform
             _inviteCount++;
         }
 
+        public bool CanShowSideBar()
+        {
+            return true;
+        }
+
+        public bool IsLocationSideBar()
+        {
+            return true;
+        }
+
+        public void NavigateToSideBarScene()
+        {
+        }
+
+        public void CheckScene(Action<bool> callback)
+        {
+            callback.Invoke(true);
+        }
+
         public void ClearData(string key)
         {
             PlayerPrefs.DeleteKey(key);

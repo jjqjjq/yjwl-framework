@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ET.ETFramework.Model.Client.Game;
 using JQCore;
@@ -6,15 +7,28 @@ using JQCore.tCfg;
 using JQCore.tLog;
 #if SDK_DOUYIN
 using TTSDK;
+using TTSDK.UNBridgeLib.LitJson;
 #endif
 
 namespace JQFramework.Platform
 {
 #if SDK_DOUYIN
+    [Serializable]
+    public class DySaveData
+    {
+        public string json;
+
+        public override string ToString()
+        {
+            return json;
+        }
+    }
+    
     public class DySdkMgr : ISdkMgr
     {
         private DyAdCtrl _dyAdCtrl;
         private TTFileSystemManager _dyFileSystemMgr;
+        private DySaveData _dySaveData;
 
         public DySdkMgr(Action initFinishAction)
         {
@@ -27,8 +41,32 @@ namespace JQFramework.Platform
                 JQLog.Log("Unity message HostEnum: " + env.m_HostEnum);
                 _dyFileSystemMgr = TT.GetFileSystemManager();
                 InitDir();
+                TT.GetAppLifeCycle().OnShow += OnOnShow;
+                TT.GetAppLifeCycle().OnHide += OnAppHide;
+                CheckSideBarScene();
+                _dySaveData = new DySaveData();
                 initFinishAction?.Invoke();
             });
+        }
+
+        private string _scene;
+        private string _launch_from;
+        private string _location;
+
+        private void OnOnShow(Dictionary<string, object> param)
+        {
+            foreach (var kv in param)
+            {
+                JQLog.Log(kv.Key + "=" + kv.Value);
+            }
+            _scene = (string)param["scene"];
+            _location = (string)param["location"];
+            _launch_from = (string)param["launchFrom"];
+            JQLog.Log($"scene:{_scene}, location:{_location}, launch_from:{_launch_from}");
+        }
+
+        private void OnAppHide()
+        {
         }
 
         private void InitDir()
@@ -46,7 +84,7 @@ namespace JQFramework.Platform
         private void Mkdir(string dirPath)
         {
             if (_dyFileSystemMgr.AccessSync(dirPath)) return;
-            JQLog.Log("Need Mkdir:"+dirPath);
+            JQLog.Log("Need Mkdir:" + dirPath);
             string error = _dyFileSystemMgr.MkdirSync(dirPath);
             if (!string.IsNullOrEmpty(error))
             {
@@ -157,10 +195,6 @@ namespace JQFramework.Platform
             MemoryUnloader.instance.addUnloadTask(null);
         }
 
-        public void ClearData(string key)
-        {
-            TT.ClearAllSavings();
-        }
 
         public bool IsDataExist(string key)
         {
@@ -190,18 +224,28 @@ namespace JQFramework.Platform
 
         public void LoadDataAsync(string key, Action<string> callback)
         {
-            string value = TT.LoadSaving<string>(key);
-            callback(value);
+            JQLog.Log($"LoadDataAsync:{key}");
+            _dySaveData = TT.LoadSaving<DySaveData>(key);
+            callback(_dySaveData.json);
         }
 
         public void SaveDataAsync(string key, string value)
         {
-            TT.Save(key, value);
+            JQLog.Log($"SaveDataAsync1:{key}:{value}");
+            DySaveData dySaveData = new DySaveData();
+            dySaveData.json = value;;
+            JQLog.Log($"SaveDataAsync2:{key} {dySaveData==null}");
+            TT.Save(dySaveData, key);
+            JQLog.Log($"SaveDataAsync3:{key}");
+        }
+        
+        public void ClearData(string key)
+        {
+            TT.DeleteSaving<DySaveData>(key);
         }
 
         public void SaveCloudDataAsync(string key)
         {
-            
         }
 
         public void CheckIsAddedToMyMiniProgram(Action<bool> callback)
@@ -213,6 +257,41 @@ namespace JQFramework.Platform
         {
             throw new NotImplementedException();
         }
+
+        #region 侧边栏
+
+        private bool _canShowSideBar;
+
+        public bool CanShowSideBar()
+        {
+            return _canShowSideBar;
+        }
+
+        public bool IsLocationSideBar()
+        {
+            if (_scene == "021036" && _launch_from == "homepage" && _location == "sidebar_card")
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void NavigateToSideBarScene()
+        {
+            JQLog.Log("NavigateToSideBarScene");
+            JsonData jsonData = new JsonData();
+            jsonData["scene"] = "sidebar";
+            TT.NavigateToScene(jsonData, () => { JQLog.Log($"NavigateToSideBarScene Success"); },
+                () => { }, ((i, s) => { JQLog.LogError($"NavigateToSideBarScene Error:{i} {s}"); }));
+        }
+
+        private void CheckSideBarScene()
+        {
+            TT.CheckScene(TTSideBar.SceneEnum.SideBar, isExist => { _canShowSideBar = isExist; }, () => { },
+                ((i, s) => { JQLog.LogError($"checkScene fail:{i} {s}"); }));
+        }
+
+        #endregion
     }
 #endif
 }
