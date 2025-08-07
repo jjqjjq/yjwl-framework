@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿#if TextMeshPro
+using UnityEngine;
 using System.Collections;
 using JQCore.tLog;
-
+using TMPro;
 #if SDK_DOUYIN
 using TTSDK;
 #endif
 #if SDK_WEIXIN
-using JQCore.tLog;
 using WeChatWASM;
 #endif
 using UnityEngine.UI;
@@ -14,11 +14,11 @@ using UnityEngine.EventSystems;
 
 namespace JQFramework.tUGUI
 {
-    public class WXInputField : MonoBehaviour, IPointerClickHandler, IPointerExitHandler
+    public class WebGLTMPInputField : MonoBehaviour, IPointerClickHandler, IPointerExitHandler
     {
-        public InputField input;
+        public TMP_InputField input;
         private bool isShowKeyboard = false;
-
+        
         public void OnPointerClick(PointerEventData eventData)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -37,7 +37,6 @@ namespace JQFramework.tUGUI
             }
 #endif
         }
-
 
 #if UNITY_WEBGL && !UNITY_EDITOR
 #if SDK_DOUYIN
@@ -157,3 +156,4 @@ namespace JQFramework.tUGUI
 #endif
     }
 }
+#endif

@@ -374,11 +374,11 @@ namespace JQEditor.Check
             TMP_InputField[] inputFields = cloneGo.GetComponentsInChildren<TMP_InputField>(true);
             foreach (TMP_InputField inputField in inputFields)
             {
-                WXTMPInputField wxtmpInputField = inputField.GetComponent<WXTMPInputField>();
-                if (wxtmpInputField == null)
+                WebGLTMPInputField webGltmpInputField = inputField.GetComponent<WebGLTMPInputField>();
+                if (webGltmpInputField == null)
                 {
-                    wxtmpInputField = inputField.gameObject.AddComponent<WXTMPInputField>();
-                    wxtmpInputField.input = inputField;
+                    webGltmpInputField = inputField.gameObject.AddComponent<WebGLTMPInputField>();
+                    webGltmpInputField.input = inputField;
                     count++;
                 }
             }
@@ -387,11 +387,11 @@ namespace JQEditor.Check
             InputField[] inputFields2 = cloneGo.GetComponentsInChildren<InputField>(true);
             foreach (InputField inputField in inputFields2)
             {
-                WXInputField wxInputField = inputField.GetComponent<WXInputField>();
-                if (wxInputField == null)
+                WebGLInputField webGLInputField = inputField.GetComponent<WebGLInputField>();
+                if (webGLInputField == null)
                 {
-                    wxInputField = inputField.gameObject.AddComponent<WXInputField>();
-                    wxInputField.input = inputField;
+                    webGLInputField = inputField.gameObject.AddComponent<WebGLInputField>();
+                    webGLInputField.input = inputField;
                     count++;
                 }
             }
