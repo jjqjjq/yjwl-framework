@@ -339,7 +339,7 @@ namespace JQFramework.Platform
         {
             JQLog.LogWarning($"ReportEvent:{eventId} {data}");
             //开通了再打开
-            // IWxReportEvent iWxReportEvent = data as IWxReportEvent;
+            // IReportEvent iWxReportEvent = data as IReportEvent;
             // if (iWxReportEvent != null)
             // {
             //     WX.ReportEvent(eventId, iWxReportEvent.ToDictionary());

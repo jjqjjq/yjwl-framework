@@ -10,7 +10,6 @@ using JQEditor.Build;
 using JQEditor.Check.tCheckTexture;
 using JQCore.DynamicTexture;
 using JQCore.tRes;
-using JQFramework.JQFramework.tUGUI;
 #if TextMeshPro
 using TMPro;
 using TMPro.EditorUtilities;

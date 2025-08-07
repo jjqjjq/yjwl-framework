@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using JQCore.tLog;
+
+#if SDK_DOUYIN
 using TTSDK;
+#endif
 #if SDK_WEIXIN
 using JQCore.tLog;
 using WeChatWASM;
