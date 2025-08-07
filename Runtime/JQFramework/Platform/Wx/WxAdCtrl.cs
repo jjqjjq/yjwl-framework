@@ -12,19 +12,13 @@ namespace JQFramework.Platform
     {
         private Dictionary<string, WxAdBean> _wxAdBeanDic = new Dictionary<string, WxAdBean>();
 
-        private const string IMG_URL1 =
-            "https://mmocgame.qpic.cn/wechatgame/QZcggKbynZ9xpjgKWIes1icbb2YDicNdQe60SFcG0kajV71v3ibh37pns4yXEg64lLq/0";
-
-        private const string IMG_URL2 =
-            "https://mmocgame.qpic.cn/wechatgame/IwBFVVhZF58UDVczNXOM8EXb3ic4iaZUzb3sWgpdWEk9hTeW8sPL8IILM8BwR91YpP/0";
-
-        private const string IMG_ID1 = "0VlL/SAZQ8KYcdK+BcrOBA==";
-        private const string IMG_ID2 = "lTFPgrh6S82yOAjHuMKu0g==";
+        private string[] _shareCfgs;
         private string _currOpenId = null;
         private string _encodeOpenId = null;
 
-        public WxAdCtrl()
+        public WxAdCtrl(string[] shareCfgs)
         {
+            _shareCfgs = shareCfgs;
             WX.UpdateShareMenu(new UpdateShareMenuOption()
             {
                 withShareTicket = true,
@@ -34,8 +28,8 @@ namespace JQFramework.Platform
             WX.OnShareAppMessage(new WXShareAppMessageParam()
             {
                 title = "差一点就过了，帮帮我!",
-                imageUrl = IMG_URL1,
-                imageUrlId = IMG_ID1
+                imageUrlId = _shareCfgs[0],
+                imageUrl = _shareCfgs[1],
             });
         }
 
@@ -48,8 +42,8 @@ namespace JQFramework.Platform
                 WX.OnShareAppMessage(new WXShareAppMessageParam()
                 {
                     title = "差一点就过了，帮帮我!",
-                    imageUrl = IMG_URL1,
-                    imageUrlId = IMG_ID1,
+                    imageUrlId = _shareCfgs[2],
+                    imageUrl = _shareCfgs[3],
                     query = $"SharerId={_encodeOpenId}"
                 });
             }
@@ -95,8 +89,8 @@ namespace JQFramework.Platform
         {
             ShareAppMessageOption option = new ShareAppMessageOption();
             option.title = "求你帮帮，还差一点就过关";
-            option.imageUrl = IMG_URL2;
-            option.imageUrlId = IMG_ID2;
+            option.imageUrlId = _shareCfgs[2];
+            option.imageUrl = _shareCfgs[3];
             option.query = $"SharerId={_encodeOpenId}";
             WX.ShareAppMessage(option);
         }

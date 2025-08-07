@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using JQCore.tLog;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace JQFramework.tUGUI
 {
@@ -14,12 +16,17 @@ namespace JQFramework.tUGUI
             if (resolutionW == -1)
             {
                 RectTransform canvasRectTransform = GameObject.Find("Canvas").transform as RectTransform;
-                resolutionW = canvasRectTransform.sizeDelta.x;
-                resolutionH = canvasRectTransform.sizeDelta.y;
+                CanvasScaler canvasScaler = canvasRectTransform.GetComponent<CanvasScaler>();
+                resolutionW = canvasScaler.referenceResolution.x;
+                resolutionH = canvasScaler.referenceResolution.y;
             }
             float imgRate = width / height;
-            
-            if (imgRate < screenRate)
+            if (imgRate == screenRate)
+            {
+                rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+                rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+                rectTransform.sizeDelta = new Vector2(resolutionW, resolutionH);
+            }else if (imgRate < screenRate)
             {
                 float currImgW = screenRate * resolutionH;
                 float rightImgH = currImgW / imgRate;

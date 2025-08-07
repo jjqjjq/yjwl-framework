@@ -34,11 +34,13 @@ namespace JQFramework.Platform
         private Dictionary<string, string> _subscribeStorageDic = new Dictionary<string, string>();
         private string _currOpenId;
         private WxAdCtrl _wxAdCtrl;
+        private string[] _shareCfgs;
         private bool _uploadFileFailed = false;
 
         public WxSdkMgr(params object[] args)
         {
             _cloudEnvId = args[0] as string;
+            _shareCfgs = args[1] as string[];
             _writeFileParam = new WriteFileParam();
             _readFileParam = new ReadFileParam();
             WXBase.InitSDK(OnInitFish);
@@ -326,7 +328,7 @@ namespace JQFramework.Platform
 
         public void InitAfterPermission()
         {
-            _wxAdCtrl = new WxAdCtrl();
+            _wxAdCtrl = new WxAdCtrl(_shareCfgs);
             Sys.adCtrl = _wxAdCtrl;
         }
 
