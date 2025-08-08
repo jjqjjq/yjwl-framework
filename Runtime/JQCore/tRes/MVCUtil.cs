@@ -130,10 +130,10 @@ namespace JQCore.tRes
             return list;
         }
 
-        private const string ROOTVIEW_TEMPLATE = "Assets/Editor/JQEditor/MVC/ViewTemplate.txt";
-        private const string ROOTVIEW_TEMPLATE_EXTRA = "Assets/Editor/JQEditor/MVC/ExtraViewTemplate.txt";
-        private const string SUBVIEW_TEMPLATE = "Assets/Editor/JQEditor/MVC/SubViewTemplate.txt";
-        private const string SUBVIEW_TEMPLATE_EXTRA = "Assets/Editor/JQEditor/MVC/ExtraSubViewTemplate.txt";
+        private const string ROOTVIEW_TEMPLATE = "Assets/Plugins/yjwl-framework/Editor/MVC/ViewTemplate.txt";
+        private const string ROOTVIEW_TEMPLATE_EXTRA = "Assets/Plugins/yjwl-framework/Editor/MVC/ExtraViewTemplate.txt";
+        private const string SUBVIEW_TEMPLATE = "Assets/Plugins/yjwl-framework/Editor/MVC/SubViewTemplate.txt";
+        private const string SUBVIEW_TEMPLATE_EXTRA = "Assets/Plugins/yjwl-framework/Editor/MVC/ExtraSubViewTemplate.txt";
 
         private static string _templatePath;
         private static string _extraTemplatePath;
