@@ -98,6 +98,8 @@ namespace JQEditor.Build
         }
 #endif
 
+        
+        
         private static void setOption()
         {
             if (BuildAppInfo.isDevelop)
@@ -115,8 +117,7 @@ namespace JQEditor.Build
             }
             else
             {
-                string sysCfgFileName = BuildAppInfo.sysCfgType.ToString();
-                projectConf.CDN = $"{BuildAppInfo.CDN}/{sysCfgFileName}/CDN/{PathUtil.platformName}/v{BuildAppInfo.version}";
+                projectConf.CDN = $"{BuildAppInfo.CDN}/{GetCDNPath()}";
             }
 
             config.CompileOptions.DevelopBuild = BuildAppInfo.isDevelop;
@@ -130,8 +131,7 @@ namespace JQEditor.Build
             }
             else
             {
-                string sysCfgFileName = BuildAppInfo.sysCfgType.ToString();
-                config.CDN = $"{BuildAppInfo.CDN}/{sysCfgFileName}/CDN/{PathUtil.platformName}/v{BuildAppInfo.version}";
+                config.CDN = $"{BuildAppInfo.CDN}/{GetCDNPath()}";
             }
             config.appId = BuildAppInfo.AppId;
             config.wasmSubFramework = WasmSubFramework.WebGL;
@@ -543,10 +543,14 @@ namespace JQEditor.Build
             return ossUploadBeans;
         }
 
+        private static string GetCDNPath()
+        {
+            return $"CDN/{BuildAppInfo.ProductNick}/{BuildAppInfo.sysCfgType}/{PathUtil.platformName}/v{BuildAppInfo.version}";
+        }
+        
         private static (string, string) getOssPackagePath(string packageOutputDirectory, string fileName)
         {
-            string sysCfgFileName = BuildAppInfo.sysCfgType.ToString();
-            string ossPath = $"{sysCfgFileName}/CDN/{PathUtil.platformName}/v{BuildAppInfo.version}/{fileName}";
+            string ossPath = $"{GetCDNPath()}/{fileName}";
             // if (fileName.EndsWith(".bin.txt"))
             // {
             //     ossPath = $"{sysCfgFileName}/CDN/{PathUtil.platformName}/v{BuildAppInfo.version}/CUS/{fileName}";

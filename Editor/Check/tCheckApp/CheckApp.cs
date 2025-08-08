@@ -130,6 +130,7 @@ namespace JQEditor.Check.tCheckApp
             AddInfo(globalGroup, "清除存档", CheckGlobalTools.DeleteSaves); //√
             AddInfo(globalGroup, "截图", CheckGlobalTools.CaptureScreenshot); //√
             AddInfo(globalGroup, "软著代码搜集", CheckGlobalTools.CollectCode); //√
+            AddInfo(globalGroup, "检查挂载脚本", CheckGlobalTools.FindUnityClass); //√
 
             //            AddInfo(CheckGroup.全局检查, "AI节点和MapConfiger配置参数检查", CheckGlobalTools.CheckAIAndMapRes);
             //            AddInfo(CheckGroup.全局检查, "AudioSource检查", CheckGlobalTools.checkSound);

@@ -86,6 +86,16 @@ namespace JQEditor.Check
             Debug.Log(ssss);
         }
 
+        public static void FindUnityClass(string arg1, Action arg2)
+        {
+            LODGroup[] lodGroups = GameObject.FindObjectsOfType<LODGroup>(true);
+            foreach (LODGroup lodGroup in lodGroups)
+            {
+                Debug.Log(lodGroup.name);
+            }
+            arg2?.Invoke();
+        }
+
 
         //[MenuItem("IrfCheck/检查无用组件")]
         public static void CheckUnuseCompnent(string name, Action endAction)

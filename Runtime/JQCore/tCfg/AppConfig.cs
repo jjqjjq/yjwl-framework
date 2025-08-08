@@ -130,6 +130,10 @@ namespace JQCore.tCfg
         public static bool IsDebug => bool.Parse(_cfgDic["IsDebug"]);
 
         /// <summary>
+        ///     是否开通流量主
+        /// </summary>
+        public static bool IsAdOn => bool.Parse(_cfgDic["IsAdOn"]);
+        /// <summary>
         ///     是否是调试模式
         /// </summary>
         public static SdkPlatform SdkPlatform => (SdkPlatform)Enum.Parse(typeof(SdkPlatform), _cfgDic["SdkPlatform"]);

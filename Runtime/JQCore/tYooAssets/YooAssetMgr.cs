@@ -153,7 +153,8 @@ namespace JQCore.tYooAssets
         /// <param name="loadSceneMode"></param>
         /// <param name="loaded"></param>
         /// <param name="activateOnLoad"></param>
-        public static void LoadSceneAsync(string shortAssetPath, LoadSceneMode loadSceneMode, Action<SceneOperationHandle> loaded, bool suspendLoad = false)
+        public static void LoadSceneAsync(string shortAssetPath, LoadSceneMode loadSceneMode, Action<SceneOperationHandle> loaded,
+            bool suspendLoad = false)
         {
             JQLog.LogWarning("LoadResource:" + shortAssetPath);
             addRecord(shortAssetPath);
@@ -175,9 +176,9 @@ namespace JQCore.tYooAssets
 
                 _assetDic.Clear();
                 //该版本不支持
-                #if !UNITY_WEBGL
+#if !UNITY_WEBGL
                 Package.ForceUnloadAllAssets();
-                #endif
+#endif
             }
 
             Package = null;
@@ -207,12 +208,12 @@ namespace JQCore.tYooAssets
                     editorSimulateModeParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild(packageName);
                     initializationOperation = package.InitializeAsync(editorSimulateModeParameters);
                     break;
-                case EPlayMode.OfflinePlayMode:// 单机运行模式
+                case EPlayMode.OfflinePlayMode: // 单机运行模式
                     var offlinePlayModeParameters = new OfflinePlayModeParameters();
                     offlinePlayModeParameters.DecryptionServices = new GameDecryptionServices();
                     initializationOperation = package.InitializeAsync(offlinePlayModeParameters);
                     break;
-                case EPlayMode.HostPlayMode:// 联机运行模式
+                case EPlayMode.HostPlayMode: // 联机运行模式
                     var hostPlayModeParameters = new HostPlayModeParameters();
                     hostPlayModeParameters.BuildinQueryServices = new GameQueryServices();
                     hostPlayModeParameters.DecryptionServices = new GameDecryptionServices();
@@ -220,7 +221,7 @@ namespace JQCore.tYooAssets
                     initializationOperation = package.InitializeAsync(hostPlayModeParameters);
                     JQLog.Log($"HostPlayModeParameters: {hostPlayModeParameters.RemoteServices.GetRemoteMainURL("??")}");
                     break;
-                case EPlayMode.WebPlayMode:// Web运行模式
+                case EPlayMode.WebPlayMode: // Web运行模式
                     var webPlayModeParameters = new WebPlayModeParameters();
                     webPlayModeParameters.BuildinQueryServices = new GameQueryServices(); //太空战机DEMO的脚本类，详细见StreamingAssetsHelper
                     webPlayModeParameters.RemoteServices = new RemoteServices();
@@ -247,7 +248,10 @@ namespace JQCore.tYooAssets
         {
             public bool QueryStreamingAssets(string packageName, string fileName)
             {
+#if !SDK_WEIXIN
                 return Sys.sdkMgr.IsStreamingAssetsExist();
+#endif
+                return true;
             }
         }
 
