@@ -6,6 +6,7 @@ using JQCore;
 using JQCore.tCfg;
 using JQCore.tLog;
 #if SDK_DOUYIN
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using TTSDK;
 using TTSDK.UNBridgeLib.LitJson;
 #endif
@@ -116,7 +117,7 @@ namespace JQFramework.Platform
 
         public bool IsSubscribed(string tmplId)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public void Logout()
@@ -126,22 +127,19 @@ namespace JQFramework.Platform
 
         public void AddTouchEnd(string type)
         {
-            throw new NotImplementedException();
         }
 
         public void RemoveTouchEnd(string type)
         {
-            throw new NotImplementedException();
         }
 
         public void AddPermissions()
         {
-            throw new NotImplementedException();
         }
 
         public bool IsNeedAddPermissions()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public void InitAfterPermission()
@@ -210,6 +208,18 @@ namespace JQFramework.Platform
             // {
             //     TT.ReportAnalytics(eventId, iReportEvent.ToDictionary());
             // }
+        }
+        
+        public void ReportScene(int sceneId)
+        {
+            JQLog.Log($"ReportScene:{sceneId}");
+            JsonData jsonData = new JsonData();
+            jsonData["sceneId"] = sceneId;
+            jsonData["costTime"] = UnityEngine.Time.time;
+            TT.ReportScene(jsonData, null, ((i, s) =>
+            {
+                JQLog.LogError($"ReportScene Fail:{i} {s}");
+            }));
         }
 
         public void GC()

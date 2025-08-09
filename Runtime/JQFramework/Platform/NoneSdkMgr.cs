@@ -217,5 +217,10 @@ namespace JQFramework.Platform
         public void VibrateShort(int type)
         {
         }
+
+        public void ReportScene(int sceneId)
+        {
+            
+        }
     }
 }

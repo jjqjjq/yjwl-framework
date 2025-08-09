@@ -32,8 +32,8 @@ namespace JQFramework.tUtil
         {
             if (Sys.GAME_WIDTH > Sys.GAME_HEIGHT) //横屏
             {
-                Screen.orientation = ScreenOrientation.AutoRotation;
 #if !UNITY_WEBGL
+                Screen.orientation = ScreenOrientation.AutoRotation;
                 SafeAreaUtil.currScreenOrientation = ScreenOrientation.AutoRotation;
 #endif
                 Screen.autorotateToPortrait = false;
@@ -43,8 +43,8 @@ namespace JQFramework.tUtil
             }
             else //竖屏
             {
-                Screen.orientation = ScreenOrientation.Portrait;
 #if !UNITY_WEBGL
+                Screen.orientation = ScreenOrientation.Portrait;
                 SafeAreaUtil.currScreenOrientation = ScreenOrientation.Portrait;
 #endif
             }

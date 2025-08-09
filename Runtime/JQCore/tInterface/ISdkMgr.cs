@@ -57,6 +57,8 @@ namespace JQCore
         bool CanShowSideBar();
         bool IsLocationSideBar();
         void NavigateToSideBarScene();
+
+        void ReportScene(int sceneId);
 #endif
     }
 }
