@@ -279,6 +279,7 @@ namespace JQEditor.Build
 
         public static void build(bool showUI, Action endAction = null)
         {
+            EditorSceneManager.OpenScene($"Assets/Scenes/{BuildAppInfo.mainScene}");
             //            removeOtherPlatform();
             setFileName();
             setOption();

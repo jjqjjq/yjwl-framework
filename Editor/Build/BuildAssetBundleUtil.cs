@@ -434,7 +434,6 @@ namespace JQEditor.Build
             var packageName = ShaderVariantCollectorSettingData.Setting.CollectPackage;
             ShaderVariantCollector.Run(savePath, packageName, 1000, ()=>
             {
-                EditorSceneManager.OpenScene($"Assets/Scenes/{BuildAppInfo.mainScene}");
                 completedCallback?.Invoke();
             });
         }
