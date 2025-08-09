@@ -277,7 +277,7 @@ namespace JQEditor.Build
             get
             {
                 AppCfgType sysCfgType;
-                var enumStr = EditorPrefs.GetString("BuildAppInfo.sysCfgType", AppCfgType.outTest.ToString());
+                var enumStr = EditorPrefs.GetString("BuildAppInfo.sysCfgType", AppCfgType.local.ToString());
                 Enum.TryParse(enumStr, out sysCfgType);
                 return sysCfgType;
             }

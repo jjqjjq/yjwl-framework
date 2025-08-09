@@ -14,8 +14,6 @@ namespace JQCore
     public enum AppCfgType
     {
         local, //本地
-        trunk, //内网
-        outTest, //外网测试
         release, //正式版本
     }
     

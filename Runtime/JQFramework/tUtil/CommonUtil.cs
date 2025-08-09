@@ -688,13 +688,6 @@ namespace JQFramework
             view.transform.localPosition = new Vector3(_pos.x, _pos.y, 0);
         }
 
-        public static void SetQualityLevel(int level, bool applyExpensiveChanges)
-        {
-            QualitySettings.SetQualityLevel(level, applyExpensiveChanges);
-            //        Debug.Log("set level:" + QualitySettings.names[level]);
-        }
-
-
         #region string
 
         // public static string announce(string text, string key)

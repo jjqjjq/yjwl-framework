@@ -66,7 +66,37 @@ namespace JQFramework.Platform
             });
 
             UpdateSetting();
+
+            UpdateQualitySettingByDeviceModelLevel();
+
         }
+
+        //获得设备档位并设置性能
+        private void UpdateQualitySettingByDeviceModelLevel()
+        {
+            WX.GetDeviceBenchmarkInfo(new GetDeviceBenchmarkInfoOption()
+            {
+                success = result =>
+                {
+                    int modelLevel = (int)result.modelLevel;//0（档位未知），1（高档机），2（中档机），3（低档机）
+                    JQLog.Log("WX modelLevel:" + modelLevel);
+                    switch (modelLevel)
+                    {
+                        case 0:
+                        case 1:
+                            JQCore.tUtil.UnityUtil.SetQualityLevel(0);
+                            break;
+                        case 2:
+                            JQCore.tUtil.UnityUtil.SetQualityLevel(1);
+                            break;
+                        case 3:
+                            JQCore.tUtil.UnityUtil.SetQualityLevel(2);
+                            break;
+                    }
+                }
+            });
+        }
+
 
         private void UpdateSetting()
         {
@@ -517,10 +547,7 @@ namespace JQFramework.Platform
             _writeFileParam.encoding = "utf8";
             var bytes = Encoding.UTF8.GetBytes(value);
             _writeFileParam.data = bytes;
-            _writeFileParam.success = response =>
-            {
-                JQLog.Log($"SaveDataAsync:{filePath} {value}");
-            };
+            _writeFileParam.success = response => { JQLog.Log($"SaveDataAsync:{filePath} {value}"); };
             _writeFileParam.fail = response => { JQLog.LogError($"SaveDataAsync fail:{response.errCode} {response.errMsg}"); };
             _wxFileSystemManager.WriteFile(_writeFileParam);
         }

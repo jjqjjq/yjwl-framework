@@ -52,6 +52,7 @@ namespace JQCore
         void CheckIsAddedToMyMiniProgram(Action<bool> callback);
         void GetInviteCount(Action<int> action);
 
+
 #if SDK_DOUYIN
         bool CanShowSideBar();
         bool IsLocationSideBar();

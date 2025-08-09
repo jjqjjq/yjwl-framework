@@ -614,6 +614,17 @@ namespace JQCore.tUtil
 
         #endregion
 
+        public static void SetQualityLevel(int level)
+        {
+            
+            int currQualityLevel = QualitySettings.GetQualityLevel();
+            if (currQualityLevel != level)
+            {
+                JQLog.Log($"WX modelLevel change {currQualityLevel} -> {level}");
+                QualitySettings.SetQualityLevel(level, false);
+            }
+        }
+        
         public static RenderTexture GetTemporary_EX(string name, int width, int height, int depthBuffer, int msaa)
         {
             RenderTexture renderTexture = RenderTexture.GetTemporary(width, height, depthBuffer);

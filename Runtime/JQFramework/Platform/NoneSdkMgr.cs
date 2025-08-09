@@ -16,6 +16,7 @@ namespace JQFramework.Platform
     {
         public NoneSdkMgr()
         {
+            UnityUtil.SetQualityLevel(0);
         }
 
         public SdkPlatform GetPlatform()

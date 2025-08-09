@@ -29,6 +29,7 @@ namespace JQFramework.Platform
         private DyAdCtrl _dyAdCtrl;
         private TTFileSystemManager _dyFileSystemMgr;
         private DySaveData _dySaveData;
+        private TTSystemInfo _dySystemInfo;
 
         public DySdkMgr(Action initFinishAction)
         {
@@ -46,6 +47,8 @@ namespace JQFramework.Platform
                 CheckSideBarScene();
                 _dySaveData = new DySaveData();
                 initFinishAction?.Invoke();
+                _dySystemInfo = TT.GetSystemInfo();
+                UpdateQualitySettingByDeviceModelLevel();
             });
         }
 
@@ -156,10 +159,29 @@ namespace JQFramework.Platform
         {
             throw new NotImplementedException();
         }
+        
+        private void UpdateQualitySettingByDeviceModelLevel()
+        {
+            var info = _dySystemInfo;
+            double score = info.deviceScore.overall;
+            if (score >= 8.51f || score <0f)
+            {
+                JQCore.tUtil.UnityUtil.SetQualityLevel(0);
+            }else if (score >= 7.30f)
+            {
+                
+                JQCore.tUtil.UnityUtil.SetQualityLevel(1);
+            }
+            else 
+            {
+                JQCore.tUtil.UnityUtil.SetQualityLevel(2);
+                
+            }
+        }
 
         public (float, float, float, float) GetSafeAreaInfo()
         {
-            var info = TT.GetSystemInfo();
+            var info = _dySystemInfo;
             double safeAreaLeft = info.safeArea.left;
             double safeAreaRight = info.screenWidth - info.safeArea.right;
             double safeAreaTop = info.safeArea.top;
