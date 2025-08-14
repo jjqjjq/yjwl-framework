@@ -33,6 +33,11 @@ namespace JQFramework.Platform
         {
         }
 
+        public bool HasCloudEnv()
+        {
+            return true;
+        }
+
         public void StartAntiAddiction(string accountName)
         {
             throw new NotImplementedException();

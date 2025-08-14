@@ -59,16 +59,18 @@ namespace JQFramework.Platform
             _wxFileSystemManager = WX.GetFileSystemManager();
 
             //云开发
-            JQLog.Log("WX SDK Cloud:" + _cloudEnvId);
-            WX.cloud.Init(new ICloudConfig()
+            if (!string.IsNullOrEmpty(_cloudEnvId))
             {
-                env = _cloudEnvId,
-            });
+                JQLog.Log("WX SDK Cloud:" + _cloudEnvId);
+                WX.cloud.Init(new ICloudConfig()
+                {
+                    env = _cloudEnvId,
+                });
+            }
 
             UpdateSetting();
 
             UpdateQualitySettingByDeviceModelLevel();
-
         }
 
         //获得设备档位并设置性能
@@ -78,7 +80,7 @@ namespace JQFramework.Platform
             {
                 success = result =>
                 {
-                    int modelLevel = (int)result.modelLevel;//0（档位未知），1（高档机），2（中档机），3（低档机）
+                    int modelLevel = (int)result.modelLevel; //0（档位未知），1（高档机），2（中档机），3（低档机）
                     JQLog.Log("WX modelLevel:" + modelLevel);
                     switch (modelLevel)
                     {
@@ -152,6 +154,11 @@ namespace JQFramework.Platform
             throw new NotImplementedException();
         }
 
+        public bool HasCloudEnv()
+        {
+            return !string.IsNullOrEmpty(_cloudEnvId);
+        }
+
         public void StartAntiAddiction(string accountName)
         {
             throw new NotImplementedException();
@@ -175,11 +182,14 @@ namespace JQFramework.Platform
 
         public void GetInviteCount(Action<int> action)
         {
-            CallCloudFunction("getInviteCount", null, jsonData =>
+            if (HasCloudEnv())
             {
-                int inviteCount = (int)jsonData["inviteCount"];
-                action?.Invoke(inviteCount);
-            });
+                CallCloudFunction("getInviteCount", null, jsonData =>
+                {
+                    int inviteCount = (int)jsonData["inviteCount"];
+                    action?.Invoke(inviteCount);
+                });
+            }
         }
 
         #region 订阅消息
@@ -480,50 +490,62 @@ namespace JQFramework.Platform
                 paramsDic["SharerId"] = StringUtil.DecryptDES(sharerId);
             }
 
-            CallCloudFunction("login", paramsDic, jsonData =>
+            //读本地
+            if (!HasCloudEnv())
             {
-                string openId = jsonData["openId"].ToString();
-                _currOpenId = openId;
-                _wxAdCtrl.OpenId = openId;
-                JQLog.Log($"LoadDataAsync Callback  openId:{openId}");
-
-
-                //2.拿到文件ID则下载存档
-                if (jsonData.ContainsKey("fileId"))
+                LoadLocalData(key, callback);
+            }
+            else
+            {
+                CallCloudFunction("login", paramsDic, jsonData =>
                 {
-                    string fileId = jsonData["fileId"].ToString();
-                    JQLog.Log($"DownloadFile: fileId:{fileId} openId:{openId}");
+                    string openId = jsonData["openId"].ToString();
+                    _currOpenId = openId;
+                    _wxAdCtrl.OpenId = openId;
+                    JQLog.Log($"LoadDataAsync Callback  openId:{openId}");
 
-                    Stopwatch stopwatch = new Stopwatch();
-                    stopwatch.Start();
-                    WX.cloud.DownloadFile(new DownloadFileParam()
+
+                    //2.拿到文件ID则下载存档
+                    if (jsonData.ContainsKey("fileId"))
                     {
-                        fileID = fileId,
-                        cloudPath = $"{openId}.save",
-                        success = successResult =>
+                        string fileId = jsonData["fileId"].ToString();
+                        JQLog.Log($"DownloadFile: fileId:{fileId} openId:{openId}");
+
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
+                        WX.cloud.DownloadFile(new DownloadFileParam()
                         {
-                            stopwatch.Stop();
-                            JQLog.LogWarning($"WX.DownloadFile:{stopwatch.ElapsedMilliseconds}ms");
-                            JQLog.Log($"DownloadFile Success:{successResult}");
-                            ReadFile(successResult.tempFilePath, callback);
-                        },
-                        fail = failResult =>
-                        {
-                            JQLog.LogError($"DownloadFile Fail:{failResult}");
-                            ReadFile($"{_saveDataPath}/{key}", callback,
-                                () => { callback?.Invoke(null); });
-                        }
-                    });
-                }
-                //3.拿不到则看看本地有没有
-                else
-                {
-                    ReadFile($"{_saveDataPath}/{key}", callback,
-                        () => { callback?.Invoke(null); });
-                }
-            });
+                            fileID = fileId,
+                            cloudPath = $"{openId}.save",
+                            success = successResult =>
+                            {
+                                stopwatch.Stop();
+                                JQLog.LogWarning($"WX.DownloadFile:{stopwatch.ElapsedMilliseconds}ms");
+                                JQLog.Log($"DownloadFile Success:{successResult}");
+                                ReadFile(successResult.tempFilePath, callback);
+                            },
+                            fail = failResult =>
+                            {
+                                JQLog.LogError($"DownloadFile Fail:{failResult}");
+                                LoadLocalData(key, callback);
+                            }
+                        });
+                    }
+                    //3.拿不到则看看本地有没有
+                    else
+                    {
+                        LoadLocalData(key, callback);
+                    }
+                });
+            }
 
             //4.本地有则返回，没有则初始化存档
+        }
+
+        private void LoadLocalData(string key, Action<string> callback)
+        {
+            ReadFile($"{_saveDataPath}/{key}", callback,
+                () => { callback?.Invoke(null); });
         }
 
         // public void LoadDataAsync(string key, Action<string> callback)

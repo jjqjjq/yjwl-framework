@@ -12,6 +12,8 @@ namespace JQCore
         bool NeedShowSubscribeTips(string tmplId);
         void RequestSubscribeMessage(string[] tmplIds);
 
+        bool HasCloudEnv();
+        
         void StartAntiAddiction(string accountName);
 
         bool IsSubscribed(string tmplId);

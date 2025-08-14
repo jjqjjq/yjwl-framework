@@ -199,6 +199,11 @@ namespace JQFramework.Platform
             throw new NotImplementedException();
         }
 
+        public bool HasCloudEnv()
+        {
+            return false;
+        }
+
         public void ReportEvent<T>(string eventId, T data)
         {
             JQLog.LogWarning($"ReportEvent:{eventId} {data}");
