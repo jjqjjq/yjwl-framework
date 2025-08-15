@@ -426,9 +426,12 @@ namespace JQEditor.Build
             }
 
             EditorBuildSettings.scenes = sceneList.ToArray();
+            string outputPath = BuildTargetPath();
+            JQFileUtil.CreateDirectory(outputPath);
+            Debug.Log($"导出路径：{outputPath}");
 #if SDK_WEIXIN
             // JQFileUtil.DeleteDirectory($"{config.ProjectConf.DST}");
-            config.ProjectConf.DST = BuildTargetPath();
+            config.ProjectConf.DST = outputPath;
             config.ProjectConf.projectName = BuildAppInfo.ProductName;
             if (WXConvertCore.DoExport() == WXConvertCore.WXExportError.SUCCEED)
             {
@@ -440,9 +443,7 @@ namespace JQEditor.Build
             }
 #endif
 #if SDK_DOUYIN
-            string outputPath = BuildTargetPath();
             config.webGLOutputDir = outputPath;
-            JQFileUtil.CreateDirectory(outputPath);
             BuildManager.Build(Framework.Wasm, false);
 #endif
         }
