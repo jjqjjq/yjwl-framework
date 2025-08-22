@@ -7,11 +7,11 @@ namespace JQFramework.tInput
     public class TouchClickInputCtrl
     {
         private bool isDragging;
-        private Camera _sceneCamera;
+        protected Camera _camera;
 
-        public TouchClickInputCtrl(Camera sceneCamera)
+        public TouchClickInputCtrl(Camera camera)
         {
-            _sceneCamera = sceneCamera;
+            _camera = camera;
         }
 
         protected virtual bool IsClickSuccess(Vector2 pos)
