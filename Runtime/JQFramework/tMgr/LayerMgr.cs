@@ -22,11 +22,14 @@ namespace JQFramework.tMgr
 
             List<int> normalLayers = new List<int>();
             normalLayers.Add(ELayer.Default);
-            foreach (var layer in gameLayers)
+            if (gameLayers != null)
             {
-                int layerInt = LayerMask.NameToLayer(layer);
-                ELayer.layerDic[layer] = layerInt;
-                normalLayers.Add(layerInt);
+                foreach (var layer in gameLayers)
+                {
+                    int layerInt = LayerMask.NameToLayer(layer);
+                    ELayer.layerDic[layer] = layerInt;
+                    normalLayers.Add(layerInt);
+                }
             }
 
             ELayer.RenderHigh = LayerMask.NameToLayer("RenderHigh");
