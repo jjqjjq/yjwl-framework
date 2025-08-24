@@ -36,9 +36,9 @@ namespace JQEditor.Check
             CheckGlobalTools.addAssetToAtlasLib<Sprite>("GoodsIcon", "UI/SpriteLib/GoodsIconLib", "t:texture2D");
             CheckGlobalTools.addAssetToAtlasLib<Sprite>("ItemIcon", "UI/SpriteLib/ItemIconLib", "t:texture2D");
             //杂项图集（程序代码会设置）
-            CheckGlobalTools.addAssetToAtlasLib<Sprite>("UI/ProgramLoad/CommonIcon", "UI/SpriteLib/CommonIconUILib", "t:texture2D"); //通用图集 程序也会用
-            CheckGlobalTools.addAssetToAtlasLib<Sprite>("UI/ProgramLoad/CommonBigIcon", "UI/SpriteLib/CommonBigIconUILib", "t:texture2D"); //通用图集 程序也会用
-            CheckGlobalTools.addAssetToAtlasLib<Sprite>("UI/ProgramLoad/MainIcon", "UI/SpriteLib/MainIconUILib", "t:texture2D"); //主界面兼容图集
+            CheckGlobalTools.addAssetToAtlasLib<Sprite>("CommonIcon", "UI/SpriteLib/CommonIconUILib", "t:texture2D"); //通用图集 程序也会用
+            CheckGlobalTools.addAssetToAtlasLib<Sprite>("CommonBigIcon", "UI/SpriteLib/CommonBigIconUILib", "t:texture2D"); //通用图集 程序也会用
+            CheckGlobalTools.addAssetToAtlasLib<Sprite>("MainIcon", "UI/SpriteLib/MainIconUILib", "t:texture2D"); //主界面兼容图集
 
             
             AssetDatabase.Refresh();

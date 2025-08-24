@@ -159,6 +159,11 @@ namespace JQCore.tString
                 return -1;
             }
         }
+        
+        public static string PadWithZeros(int number, int length)
+        {
+            return number.ToString($"D{length}");
+        }
 
         #region 加解密文本
 

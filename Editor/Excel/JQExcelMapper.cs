@@ -56,12 +56,28 @@ namespace JQEditor.Excel
             }
         }
 
+        public void WriteOneRowToExcel(T excelData, int id)
+        {
+            FileInfo fileInfo = new FileInfo(_excelPath);
+            using (ExcelPackage package = new ExcelPackage(fileInfo))
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
+                foreach (KeyValuePair<string, JQExcelColumnInfo> keyValuePair in _columnInfoDic)
+                {
+                    JQExcelColumnInfo jqExcelColumnInfo = keyValuePair.Value;
+                    worksheet.Cells[id + _firstDataRow - 1, jqExcelColumnInfo.ColumnIndex].Value = jqExcelColumnInfo.GetProperty(excelData);
+                }
+                package.Save();
+            }
+        }
+
         public void WriteToExcel()
         {
             FileInfo fileInfo = new FileInfo(_excelPath);
             using (ExcelPackage package = new ExcelPackage(fileInfo))
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
+                
                 for (int i = 0; i < _dataList.Count; i++)
                 {
                     T excelData = _dataList[i];
@@ -70,6 +86,11 @@ namespace JQEditor.Excel
                         JQExcelColumnInfo jqExcelColumnInfo = keyValuePair.Value;
                         worksheet.Cells[i + _firstDataRow, jqExcelColumnInfo.ColumnIndex].Value = jqExcelColumnInfo.GetProperty(excelData);
                     }
+                }
+
+                for (int i = _dataList.Count; i < worksheet.Cells.Rows; i++)
+                {
+                    worksheet.DeleteRow(i);
                 }
 
                 package.Save();

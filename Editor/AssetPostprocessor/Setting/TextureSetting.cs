@@ -14,10 +14,9 @@ namespace JQEditor.tAssetPostprocessor
 //            importer.alphaIsTransparency = true;
 #if SDK_WEIXIN
 #if WEIXINMINIGAME
-                SetTextureSettings(importer, "WeixinMiniGame", isDivisibleOf4, targetTextureMaxSize,
-                    TextureImporterFormat.ASTC_8x8, 100, checkFormat, true);
+                SetTextureSettings(importer, "WeixinMiniGame", isDivisibleOf4, targetTextureMaxSize,TextureImporterFormat.ASTC_6x6, 100, checkFormat, true);
 #else
-                SetTextureSettings(importer, "WebGL", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_10x10, 80, checkFormat, true);
+                SetTextureSettings(importer, "WebGL", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_6x6, 80, checkFormat, true);
 #endif
 #endif
                 SetTextureSettings(importer, "Android", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_6x6, 80,
@@ -30,9 +29,9 @@ namespace JQEditor.tAssetPostprocessor
                 importer.alphaIsTransparency = false;
 #if SDK_WEIXIN
 #if WEIXINMINIGAME
-                SetTextureSettings(importer, "WeixinMiniGame", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_8x8, 100, checkFormat, true);
+                SetTextureSettings(importer, "WeixinMiniGame", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_6x6, 100, checkFormat, true);
 #else
-                SetTextureSettings(importer, "WebGL", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_10x10, 80,
+                SetTextureSettings(importer, "WebGL", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_6x6, 80,
                     checkFormat, true);
 #endif
 #endif
@@ -54,14 +53,14 @@ namespace JQEditor.tAssetPostprocessor
 
 #if SDK_WEIXIN
 #if WEIXINMINIGAME
-                SetTextureSettings(importer, "WeixinMiniGame", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_8x8, 100, checkFormat, true);
+                SetTextureSettings(importer, "WeixinMiniGame", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_10x10, 100, checkFormat, true);
 #else
                 SetTextureSettings(importer, "WebGL", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_10x10, 100,
                     checkFormat, true);
 
 #endif
 #endif
-                SetTextureSettings(importer, "Android", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_6x6, 100,
+                SetTextureSettings(importer, "Android", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_8x8, 100,
                     checkFormat, true);
                 SetTextureSettings(importer, "iPhone", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.PVRTC_RGBA4,
                     100, checkFormat, true);
@@ -71,7 +70,7 @@ namespace JQEditor.tAssetPostprocessor
                 importer.alphaIsTransparency = false;
 #if SDK_WEIXIN
 #if WEIXINMINIGAME
-                SetTextureSettings(importer, "WeixinMiniGame", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_8x8, 100, checkFormat, true);
+                SetTextureSettings(importer, "WeixinMiniGame", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_10x10, 100, checkFormat, true);
 #else
                 SetTextureSettings(importer, "WebGL", isDivisibleOf4, targetTextureMaxSize, TextureImporterFormat.ASTC_10x10, 100,
                     checkFormat, true);
@@ -88,28 +87,28 @@ namespace JQEditor.tAssetPostprocessor
             TextureImporterFormat format, int compressionQuality, bool checkFormat, bool isAlpha)
         {
 //        Debug.Log(isDivisibleOf4);
-            if (checkFormat)
-            {
-                if (name == "WeixinMiniGame" && !isDivisibleOf4)
-                {
-                    format = isAlpha ? TextureImporterFormat.ASTC_10x10 : TextureImporterFormat.ASTC_10x10;
-                }
-                
-                if (name == "WebGL" && !isDivisibleOf4)
-                {
-                    format = isAlpha ? TextureImporterFormat.ASTC_10x10 : TextureImporterFormat.ASTC_10x10;
-                }
-
-                if (name == "Android" && !isDivisibleOf4)
-                {
-                    format = isAlpha ? TextureImporterFormat.ASTC_6x6 : TextureImporterFormat.ASTC_6x6;
-                }
-
-                if (name == "iPhone" && !isDivisibleOf4)
-                {
-                    format = isAlpha ? TextureImporterFormat.ASTC_6x6 : TextureImporterFormat.ASTC_6x6;
-                }
-            }
+            // if (checkFormat)
+            // {
+            //     if (name == "WeixinMiniGame" && !isDivisibleOf4)
+            //     {
+            //         format = isAlpha ? TextureImporterFormat.ASTC_10x10 : TextureImporterFormat.ASTC_10x10;
+            //     }
+            //     
+            //     if (name == "WebGL" && !isDivisibleOf4)
+            //     {
+            //         format = isAlpha ? TextureImporterFormat.ASTC_10x10 : TextureImporterFormat.ASTC_10x10;
+            //     }
+            //
+            //     if (name == "Android" && !isDivisibleOf4)
+            //     {
+            //         format = isAlpha ? TextureImporterFormat.ASTC_6x6 : TextureImporterFormat.ASTC_6x6;
+            //     }
+            //
+            //     if (name == "iPhone" && !isDivisibleOf4)
+            //     {
+            //         format = isAlpha ? TextureImporterFormat.ASTC_6x6 : TextureImporterFormat.ASTC_6x6;
+            //     }
+            // }
 
 //        Debug.Log(format);
             TextureImporterPlatformSettings settings = importer.GetPlatformTextureSettings(name);
@@ -146,16 +145,7 @@ namespace JQEditor.tAssetPostprocessor
             }
 
             //目标贴图参数
-            string textureName = importer.assetPath;
-            int targetTextureMaxSize = 1024; //对于本项目来说，这个设置已经足够了
-            if (textureName.Contains("_Best")) //RGBA32位
-            {
-                setHighQuality(importer, targetTextureMaxSize, true);
-            }
-            else
-            {
-                setLowQuality(importer, targetTextureMaxSize, true);
-            }
+            CheckTextureName(importer, 1024, 1024);
         }
 
         //设置Terrain贴图
@@ -167,32 +157,14 @@ namespace JQEditor.tAssetPostprocessor
             }
 
             //目标贴图参数
-            string textureName = importer.assetPath;
-            int targetTextureMaxSize = 2048; //对于本项目来说，这个设置已经足够了
-            if (textureName.Contains("_Best")) //RGBA32位
-            {
-                setHighQuality(importer, targetTextureMaxSize, true);
-            }
-            else
-            {
-                setLowQuality(importer, targetTextureMaxSize, true);
-            }
+            CheckTextureName(importer, 1024, 1024);
         }
 
         //设置场景图片
         public static void ApplySceneTextureSettings(TextureImporter importer)
         {
             //目标贴图参数
-            string textureName = importer.assetPath;
-            int targetTextureMaxSize = 2048; //对于本项目来说，这个设置已经足够了
-            if (textureName.Contains("_Best")) //RGBA32位
-            {
-                setHighQuality(importer, targetTextureMaxSize, true);
-            }
-            else
-            {
-                setLowQuality(importer, targetTextureMaxSize, true);
-            }
+            CheckTextureName(importer, 2048, 2048);
         }
 
 
@@ -220,16 +192,7 @@ namespace JQEditor.tAssetPostprocessor
             //     importer.textureType = TextureImporterType.Lightmap;
             // }
             //目标贴图参数
-            string textureName = importer.assetPath;
-            int targetTextureMaxSize = 1024; //对于本项目来说，这个设置已经足够了
-            if (textureName.Contains("_Best")) //RGBA32位
-            {
-                setHighQuality(importer, targetTextureMaxSize, true);
-            }
-            else
-            {
-                setLowQuality(importer, targetTextureMaxSize, true);
-            }
+            CheckTextureName(importer, 1024, 1024);
         }
 
         //设置UI图片
@@ -339,14 +302,21 @@ namespace JQEditor.tAssetPostprocessor
             }
 
             //目标贴图参数
-            string textureName = importer.assetPath;
-            if (textureName.Contains("_Best")) //RGBA32位
+            
+            CheckTextureName(importer, 2048, 1024);
+        }
+        
+        private static void CheckTextureName(TextureImporter importer, int maxSize1, int maxSize2)
+        {
+            //目标贴图参数
+            string textureName = importer.assetPath.ToLower();
+            if (textureName.Contains("_best")) //RGBA32位
             {
-                setHighQuality(importer, 2048, true);
+                setHighQuality(importer, maxSize1, true);
             }
             else
             {
-                setLowQuality(importer, 1024, true); //
+                setLowQuality(importer, maxSize2, true); //
             }
         }
 
@@ -385,17 +355,9 @@ namespace JQEditor.tAssetPostprocessor
                 importer.anisoLevel = 0;
             }
 
-            //目标贴图参数
-            string textureName = importer.assetPath;
-            if (textureName.Contains("_Best")) //RGBA32位
-            {
-                setHighQuality(importer, 2048, true);
-            }
-            else
-            {
-                setLowQuality(importer, 2048, true); //
-            }
+            CheckTextureName(importer, 2048, 2048);
         }
+
 
         //设置Card图片
         public static void ApplyCardTextureSettings(TextureImporter importer)
@@ -432,15 +394,7 @@ namespace JQEditor.tAssetPostprocessor
             }
 
             //目标贴图参数
-            string textureName = importer.assetPath;
-            if (textureName.Contains("_Best")) //RGBA32位
-            {
-                setHighQuality(importer, 2048, true);
-            }
-            else
-            {
-                setLowQuality(importer, 1024, true); //
-            }
+            CheckTextureName(importer, 2048, 1024);
         }
 
         //设置模型贴图默认参数
@@ -493,16 +447,7 @@ namespace JQEditor.tAssetPostprocessor
             }
 
             //目标贴图参数
-            string textureName = importer.assetPath;
-            int targetTextureMaxSize = 1024; //对于本项目来说，这个设置已经足够了
-            if (textureName.Contains("_Best")) //RGBA32位
-            {
-                setHighQuality(importer, targetTextureMaxSize, true);
-            }
-            else
-            {
-                setHighQuality(importer, targetTextureMaxSize, true);
-            }
+            CheckTextureName(importer, 1024, 1024);
         }
     }
 }
