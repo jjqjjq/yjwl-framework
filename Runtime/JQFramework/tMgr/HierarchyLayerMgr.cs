@@ -67,7 +67,7 @@ namespace JQFramework.tMgr
             resolutionH = canvasTransform.sizeDelta.y;
 
             scene = initChild(rootScene, "Scene");
-            effect = initChild(rootScene, "effect");
+            effect = initChild(rootScene, "Effect");
             uiModel = initChild(scene, "UIModel");
             //  Light  _light = uiModel.gameObject.AddComponent<Light>();
             // _light.type = LightType.Directional;
