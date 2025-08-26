@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using JQCore.tFileSystem;
+using JQCore.tLog;
 using OfficeOpenXml;
 using UnityEngine;
 
@@ -13,6 +15,7 @@ namespace JQEditor.Excel
         private Dictionary<string, JQExcelColumnInfo> _columnInfoDic = new Dictionary<string, JQExcelColumnInfo>();
         private List<T> _dataList = new List<T>();
         private string _excelPath;
+        private string _excelFileName;
         private int _nameRow;
         private int _firstDataRow;
 
@@ -35,6 +38,7 @@ namespace JQEditor.Excel
         private void initExcel()
         {
             FileInfo fileInfo = new FileInfo(_excelPath);
+            _excelFileName = fileInfo.Name;
             using (ExcelPackage package = new ExcelPackage(fileInfo))
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
@@ -69,6 +73,7 @@ namespace JQEditor.Excel
                 }
                 package.Save();
             }
+            Debug.Log($"写入{_excelFileName} id：{id}");
         }
 
         public void WriteToExcel()

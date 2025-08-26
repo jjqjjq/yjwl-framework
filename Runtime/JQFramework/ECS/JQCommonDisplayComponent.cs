@@ -14,6 +14,7 @@ namespace JQCore.ECS
         protected GameObject _gameObject;
         protected Transform _transform;
         protected Vector3 _pos;
+        protected BindObjLib _bindObjLib;
 
         public Transform Transform => _transform;
         public GameObject GameObject => _gameObject;
@@ -40,28 +41,40 @@ namespace JQCore.ECS
             _transform.localRotation = Quaternion.Euler(0, 0, 0);
             _pos = pos;
             
-            BindObjLib bindObjLib = _gameObject.GetComponent<BindObjLib>();
-            OnBindAttr(bindObjLib);
+            _bindObjLib = _gameObject.GetComponent<BindObjLib>();
+            OnBindAttr();
             UpdateName();
+            OnLoadFinish();
         }
 
-        protected abstract void OnBindAttr(BindObjLib bindObjLib);
-        
-        public abstract void UpdateName();
+        protected virtual void OnBindAttr()
+        {
+            
+        }
+
+        protected virtual void UpdateName()
+        {
+            
+        }
+        protected virtual void OnLoadFinish()
+        {
+            
+        }
 
         protected virtual void OnUnBindAttr()
-        { 
+        {
+            
+        }
+
+        public override void Dispose()
+        {
+            OnUnBindAttr();
             if (_gameObject != null)
             {
                 CommonResMgr.Instance.DeSpawn(_resName, _gameObject);
                 _transform = null;
                 _gameObject = null;
             }
-        }
-
-        public override void Dispose()
-        {
-            OnUnBindAttr();
             base.Dispose();
         }
     }

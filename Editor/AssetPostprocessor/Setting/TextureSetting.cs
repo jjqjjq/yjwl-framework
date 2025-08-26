@@ -345,10 +345,10 @@ namespace JQEditor.tAssetPostprocessor
                 importer.spriteImportMode = SpriteImportMode.Single;
             }
 
-            if (importer.filterMode != FilterMode.Bilinear)
-            {
-                importer.filterMode = FilterMode.Bilinear; //线性采样
-            }
+            // if (importer.filterMode != FilterMode.Bilinear)
+            // {
+            //     importer.filterMode = FilterMode.Bilinear; //线性采样
+            // }
 
             if (importer.anisoLevel != 0)
             {
