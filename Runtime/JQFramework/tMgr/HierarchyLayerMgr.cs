@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using JQCore.tUtil;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,10 +41,18 @@ namespace JQFramework.tMgr
 
         #endregion
 
+        
+        private static Dictionary<string, Transform> _children = new Dictionary<string, Transform>();
         private static float offsetX_left;
         private static float offsetX_right;
 
-        public static void init()
+        public static Transform GetChild(string name)
+        {
+            _children.TryGetValue(name, out Transform child);
+            return child;
+        }
+
+        public static void init(string[] extraGo = null)
         {
             
             // UnityUtil.StaticFind_EX("Others/HyAudio").AddComponent_EX<HyAudioInitializer>();
@@ -54,6 +63,13 @@ namespace JQFramework.tMgr
            
             rootScene = UnityUtil.StaticFind_EX("Driver/SceneRoot").transform;
             map = initChild(rootScene, "Map");
+
+            if(extraGo != null)
+            for (int i = 0; i < extraGo.Length; i++)
+            {
+                string name = extraGo[i];
+                _children[name] = initChild(rootScene, name);
+            }
 
             cameras = UnityUtil.StaticFind_EX("Driver/Cameras").transform;
 #if UNITY_IOS

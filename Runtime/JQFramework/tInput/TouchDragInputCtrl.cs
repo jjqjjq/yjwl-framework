@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using JQCore.ECS;
 using JQCore.tLog;
+using JQFramework.tMgr;
 using UnityEngine;
 
 namespace JQFramework.tInput
@@ -7,8 +10,9 @@ namespace JQFramework.tInput
     /// <summary>
     /// 过时，使用TouchDragInputCtrl
     /// </summary>
-    public class TouchInputCtrl
+    public class TouchDragInputCtrl
     {
+        protected int _normalLayerMask; //点瓶子
         private bool isDragging;
         protected Camera _camera;
         protected GameObject _dragTarget;
@@ -16,10 +20,37 @@ namespace JQFramework.tInput
         protected Vector2 _touchStartPos;
         protected Vector3 offset;
         protected Vector3 screenPoint; // 存储物体在屏幕上的位置
+        protected Dictionary<GameObject, JQEntity> _colliderGo2EntitieDic = new Dictionary<GameObject, JQEntity>();
 
-        public TouchInputCtrl(Camera camera)
+        public TouchDragInputCtrl(Camera camera)
         {
             _camera = camera;
+            _normalLayerMask = LayerMgr.GetMaskValue(LayerMgr.NormalLayers);
+        }
+
+        public void AddColliderGoEntity(GameObject colliderGo, JQEntity cabinetEntity)
+        {
+            _colliderGo2EntitieDic.Add(colliderGo, cabinetEntity);
+        }
+
+        #region 主要方法
+
+        protected JQEntity Raycast(Vector2 pos, int layerMask)
+        {
+            Ray ray = _camera.ScreenPointToRay(pos);
+            RaycastHit hit;
+            //点击瓶子广告
+            if (Physics.Raycast(ray, out hit, 1000, layerMask))
+            {
+                GameObject colliderGo = hit.collider.gameObject;
+                // JQLog.LogError(colliderGo.name);
+                if (_colliderGo2EntitieDic.TryGetValue(colliderGo, out JQEntity clickEntity))
+                {
+                    return clickEntity;
+                }
+            }
+
+            return null;
         }
 
         protected virtual bool IsDragSuccess(Vector2 pos)
@@ -29,11 +60,15 @@ namespace JQFramework.tInput
 
         protected virtual void OnDragStart(Vector2 pos)
         {
-            _dragStartPos = _dragTarget.transform.position;
-            screenPoint = _camera.WorldToScreenPoint(_dragTarget.transform.position);
+            if (_dragTarget != null)
+            {
+                _dragStartPos = _dragTarget.transform.position;
+                screenPoint = _camera.WorldToScreenPoint(_dragTarget.transform.position);
+                offset = _dragTarget.transform.position -
+                         _camera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, screenPoint.z)); // 计算偏移量
+            }
+
             _touchStartPos = _camera.ScreenToWorldPoint(pos);
-            offset = _dragTarget.transform.position -
-                     _camera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, screenPoint.z)); // 计算偏移量
         }
 
         protected virtual void OnDraging(Vector2 pos)
@@ -48,6 +83,7 @@ namespace JQFramework.tInput
             _dragTarget = null;
         }
 
+        #endregion
 
         private bool UpdateMouse()
         {
@@ -128,6 +164,7 @@ namespace JQFramework.tInput
         public virtual void Clear()
         {
             isDragging = false;
+            _colliderGo2EntitieDic.Clear();
         }
 
         public virtual bool OnUpdate()
