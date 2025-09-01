@@ -31,6 +31,7 @@ namespace JQCore.ECS
         /// <param name="pos"></param>
         protected void LoadRes(string resName, Transform parent, Vector3 pos)
         {
+            if (_gameObject != null) return;
             _resName = resName;
             _gameObject = CommonResMgr.Instance.Spawn(_resName);
             _transform = _gameObject.transform;
@@ -71,7 +72,7 @@ namespace JQCore.ECS
             OnUnBindAttr();
             if (_gameObject != null)
             {
-                CommonResMgr.Instance.DeSpawn(_resName, _gameObject);
+                CommonResMgr.Instance.DeSpawnPerformance(_resName, _gameObject);
                 _transform = null;
                 _gameObject = null;
             }

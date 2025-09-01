@@ -32,6 +32,7 @@ namespace JQCore.ECS
         /// <param name="onLoadAction"></param>
         protected void LoadRes(string resUrl, Transform parent, Vector3 pos)
         {
+            if (_gameObject != null) return;
             _resUrl = resUrl;
             _parent = parent;
             _pos = pos;
