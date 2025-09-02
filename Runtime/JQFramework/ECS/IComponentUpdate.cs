@@ -2,6 +2,6 @@
 {
     public interface IComponentUpdate
     {
-        void onUpdate();
+        void OnUpdate();
     }
 }

@@ -166,7 +166,7 @@ namespace JQCore.ECS
             for (int i = 0; i < _componentUpdateList.Count; i++)
             {
                 IComponentUpdate component = _componentUpdateList[i];
-                component.onUpdate();
+                component.OnUpdate();
             }
         }
 
