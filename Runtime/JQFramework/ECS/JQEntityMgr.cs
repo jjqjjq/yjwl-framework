@@ -53,7 +53,7 @@ namespace JQFramework.ECS
             if (entity == null) return null;
             _entityList.Remove(entity);
             _entityDic.Remove(id);
-            entity.onReset();
+            entity.Dispose();
             _listChange = true;
             return entity as T;
         }
@@ -123,8 +123,8 @@ namespace JQFramework.ECS
             for (int i = 0; i < _entityList.Count; i++)
             {
                 JQEntity entity = _entityList[i];
-                entity.onReset();
-                ObjectPool.Instance.Recycle(entity);
+                entity.Dispose();
+                // ObjectPool.Instance.Recycle(entity);
             }
             _entityDic.Clear();
             _tempList.Clear();

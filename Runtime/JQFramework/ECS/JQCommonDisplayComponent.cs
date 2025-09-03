@@ -65,17 +65,17 @@ namespace JQCore.ECS
         {
         }
 
-        public override void onReset()
-        {
-            OnUnBindAttr();
-            if (_gameObject != null)
-            {
-                CommonResMgr.Instance.DeSpawnPerformance(_resName, _gameObject);
-                _transform = null;
-                _gameObject = null;
-            }
-            base.onReset();
-        }
+        // public override void onReset()
+        // {
+        //     OnUnBindAttr();
+        //     if (_gameObject != null)
+        //     {
+        //         CommonResMgr.Instance.DeSpawnPerformance(_resName, _gameObject);
+        //         _transform = null;
+        //         _gameObject = null;
+        //     }
+        //     base.onReset();
+        // }
 
         public override void Dispose()
         {
