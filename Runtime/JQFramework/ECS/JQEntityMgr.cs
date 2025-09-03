@@ -12,6 +12,7 @@ namespace JQFramework.ECS
         private bool _isPlaying;
         private bool _listChange;
         private List<JQEntity> _tempList = new List<JQEntity>();
+        private Dictionary<long, JQEntity> _entityDic = new Dictionary<long, JQEntity>();
         
         public JQEntityMgr(IWorldMgr worldMgr)
         {
@@ -25,17 +26,9 @@ namespace JQFramework.ECS
             return _entityList;
         }
 
-        public JQEntity getEntity(int instanceId)
+        public T getEntity<T>(long id) where T : JQEntity
         {
-            for (int i = 0; i < _entityList.Count; i++)
-            {
-                JQEntity entity = _entityList[i];
-                if (entity.InstanceId == instanceId)
-                {
-                    return entity;
-                }
-            }
-            return null;
+            return _entityDic[id] as T;
         }
 
         public void addEntity(JQEntity entity)
@@ -44,6 +37,7 @@ namespace JQFramework.ECS
             entity.worldMgr = _worldMgr;
             entity.onAwake();
             _entityList.Add(entity);
+            _entityDic.Add(entity.ID, entity);
 
             if (_isPlaying)
             {
@@ -53,13 +47,15 @@ namespace JQFramework.ECS
             _listChange = true;
         }
 
-        public void removeEntity(JQEntity entity)
+        public T removeEntity<T>(long id) where T : JQEntity
         {
-            if (entity == null) return;
+            _entityDic.TryGetValue(id, out JQEntity entity);
+            if (entity == null) return null;
             _entityList.Remove(entity);
+            _entityDic.Remove(id);
             entity.onReset();
-            ObjectPool.Instance.Recycle(entity);
             _listChange = true;
+            return entity as T;
         }
 
         public void start()
@@ -130,6 +126,7 @@ namespace JQFramework.ECS
                 entity.onReset();
                 ObjectPool.Instance.Recycle(entity);
             }
+            _entityDic.Clear();
             _tempList.Clear();
             _entityList.Clear();
             _isPlaying = false;

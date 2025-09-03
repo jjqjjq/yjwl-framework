@@ -9,6 +9,5 @@ namespace JQFramework.ECS
         
         public void GameOver();
 
-        public Dictionary<long, JQEntity> getTypeEntity(EntityType type);
     }
 }
