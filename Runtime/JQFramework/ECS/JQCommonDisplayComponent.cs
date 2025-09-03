@@ -19,7 +19,8 @@ namespace JQCore.ECS
         public Transform Transform => _transform;
         public GameObject GameObject => _gameObject;
 
-        protected JQCommonDisplayComponent(string name, int executePriority, bool needEvent) : base(name, executePriority, needEvent)
+        protected JQCommonDisplayComponent(string name, int executePriority, bool needEvent) : base(name, executePriority,
+            needEvent)
         {
         }
 
@@ -41,7 +42,7 @@ namespace JQCore.ECS
             _transform.localPosition = pos;
             _transform.localRotation = Quaternion.Euler(0, 0, 0);
             _pos = pos;
-            
+
             _bindObjLib = _gameObject.GetComponent<BindObjLib>();
             OnBindAttr();
             UpdateName();
@@ -50,21 +51,30 @@ namespace JQCore.ECS
 
         protected virtual void OnBindAttr()
         {
-            
         }
 
         protected virtual void UpdateName()
         {
-            
         }
+
         protected virtual void OnLoadFinish()
         {
-            
         }
 
         protected virtual void OnUnBindAttr()
         {
-            
+        }
+
+        public override void onReset()
+        {
+            OnUnBindAttr();
+            if (_gameObject != null)
+            {
+                CommonResMgr.Instance.DeSpawnPerformance(_resName, _gameObject);
+                _transform = null;
+                _gameObject = null;
+            }
+            base.onReset();
         }
 
         public override void Dispose()
@@ -76,6 +86,7 @@ namespace JQCore.ECS
                 _transform = null;
                 _gameObject = null;
             }
+
             base.Dispose();
         }
     }
