@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace JQCore.tUtil
@@ -69,7 +70,22 @@ namespace JQCore.tUtil
                 origonArr.Remove(temp);
             }
         }
+        public static void MoveLastToIndex<T>(T[] array, int index)
+        {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            int n = array.Length;
+            if (n == 0) return;
+            if (index < 0 || index >= n) throw new ArgumentOutOfRangeException(nameof(index));
+            if (index == n - 1) return; // 尾部就位，无需操作
 
+            T last = array[n - 1];
+            // 右移 [index, n-2] 区间
+            for (int i = n - 1; i > index; i--)
+            {
+                array[i] = array[i - 1];
+            }
+            array[index] = last;
+        }
 
         #region data transform
         public static string ListToStr(List<string> uintList)
