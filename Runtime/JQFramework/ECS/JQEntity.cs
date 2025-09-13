@@ -34,6 +34,8 @@ namespace JQCore.ECS
 
         public int InstanceId => _instanceId;
 
+        public JQEventDispatcher Event => _eventDispatcher;
+
         private JQEventDispatcher _eventDispatcher;
         private GameTime _gameTime;
         private List<JQComponent> _componentList;

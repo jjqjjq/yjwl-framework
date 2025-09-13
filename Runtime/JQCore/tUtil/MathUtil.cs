@@ -5,6 +5,24 @@ namespace JQCore.tUtil
 {
     public static class MathUtil
     {
+        /// <summary>
+        /// 获得垂直于p1和p2的向量
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public static Vector3 GetPerpendicular(Vector3 p1, Vector3 p2)
+        {
+            // 计算AB方向向量
+            Vector3 direction = (p1 - p2).normalized;
+        
+            // 计算垂直向量（在XZ平面上）
+            Vector3 perpendicular1 = new Vector3(direction.y, -direction.x, 0);
+            return perpendicular1;
+        }
+        
+        
+        
         //生成一个由数字和字母组合而成的长度为6的字符串随机种子
         public static string GenerateRandomSeed()
         {
