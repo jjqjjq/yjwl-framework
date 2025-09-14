@@ -178,7 +178,7 @@ namespace JQCore.ECS
             for (int i = 0; i < _componentDisplayUpdateList.Count; i++)
             {
                 IComponentDisplayUpdate component = _componentDisplayUpdateList[i];
-                component.onDisplayUpdate();
+                component.OnDisplayUpdate();
             }
         }
 

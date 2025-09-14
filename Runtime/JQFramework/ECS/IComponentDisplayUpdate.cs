@@ -2,6 +2,6 @@
 {
     public interface IComponentDisplayUpdate
     {
-        void onDisplayUpdate();
+        void OnDisplayUpdate();
     }
 }
