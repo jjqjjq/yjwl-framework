@@ -55,7 +55,7 @@ namespace JQCore.ECS
             _componentDic = new Dictionary<Type, JQComponent>();
         }
 
-        public T addComponent<T>() where T : JQComponent, new()
+        public T AddComponent<T>() where T : JQComponent, new()
         {
             T component = new T();
             component.SetEntity(this);
@@ -64,7 +64,7 @@ namespace JQCore.ECS
             return component;
         }
 
-        public T getComponent<T>() where T : JQComponent
+        public T GetComponent<T>() where T : JQComponent
         {
             if (_componentDic == null)
             {
@@ -75,9 +75,9 @@ namespace JQCore.ECS
             return component as T;
         }
 
-        protected void sortAllComponent()
+        protected void SortAllComponent()
         {
-            _componentList.Sort(sortComponent);
+            _componentList.Sort(SortComponent);
             for (int i = 0; i < _componentList.Count; i++)
             {
                 JQComponent component = _componentList[i];
@@ -115,7 +115,7 @@ namespace JQCore.ECS
 
 
         // --优先级越大越往后放
-        private int sortComponent(JQComponent a, JQComponent b)
+        private int SortComponent(JQComponent a, JQComponent b)
         {
             if (a.ExecutePriority != b.ExecutePriority)
             {
@@ -140,11 +140,11 @@ namespace JQCore.ECS
             }
         }
 
-        public void onAwake()
+        public void OnAwake()
         {
         }
 
-        public void onStart()
+        public void OnStart()
         {
             for (int i = 0; i < _componentList.Count; i++)
             {
@@ -153,7 +153,7 @@ namespace JQCore.ECS
             }
         }
 
-        public void onPause()
+        public void OnPause()
         {
             for (int i = 0; i < _componentList.Count; i++)
             {
@@ -162,38 +162,50 @@ namespace JQCore.ECS
             }
         }
 
-        public void onUpdate()
+        public void OnUpdate()
         {
             if (_componentUpdateList == null) return;
             for (int i = 0; i < _componentUpdateList.Count; i++)
             {
                 IComponentUpdate component = _componentUpdateList[i];
                 component.OnUpdate();
+                if (_componentUpdateList == null)
+                {
+                    break;
+                }
             }
         }
 
-        public void onDisplayUpdate()
+        public void OnDisplayUpdate()
         {
             if (_componentDisplayUpdateList == null) return;
             for (int i = 0; i < _componentDisplayUpdateList.Count; i++)
             {
                 IComponentDisplayUpdate component = _componentDisplayUpdateList[i];
                 component.OnDisplayUpdate();
+                if (_componentDisplayUpdateList == null)
+                {
+                    break;
+                }
             }
         }
 
-        public void onLateUpdate()
+        public void OnLateUpdate()
         {
             if (_componentLateUpdateList == null) return;
             for (int i = 0; i < _componentLateUpdateList.Count; i++)
             {
                 IComponentLateUpdate component = _componentLateUpdateList[i];
                 component.onLateUpdate();
+                if (_componentLateUpdateList == null)
+                {
+                    break;
+                }
             }
         }
 
 
-        public void onReset()
+        public void OnReset()
         {
             for (int i = 0; i < _componentList.Count; i++)
             {

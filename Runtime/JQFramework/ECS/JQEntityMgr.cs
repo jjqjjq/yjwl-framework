@@ -35,13 +35,13 @@ namespace JQFramework.ECS
         {
             entity.entityMgr = this;
             entity.worldMgr = _worldMgr;
-            entity.onAwake();
+            entity.OnAwake();
             _entityList.Add(entity);
             _entityDic.Add(entity.ID, entity);
 
             if (_isPlaying)
             {
-                entity.onStart();
+                entity.OnStart();
             }
 
             _listChange = true;
@@ -65,7 +65,7 @@ namespace JQFramework.ECS
             for (int i = 0; i < _entityList.Count; i++)
             {
                 JQEntity entity = _entityList[i];
-                entity.onStart();
+                entity.OnStart();
 
             }
         }
@@ -75,7 +75,7 @@ namespace JQFramework.ECS
             for (int i = 0; i < _entityList.Count; i++)
             {
                 JQEntity entity = _entityList[i];
-                entity.onPause();
+                entity.OnPause();
             }
         }
 
@@ -95,7 +95,7 @@ namespace JQFramework.ECS
             for (int i = 0; i < _tempList.Count; i++)
             {
                 JQEntity entity = _tempList[i];
-                entity.onUpdate();
+                entity.OnUpdate();
             }
         }
         
@@ -104,7 +104,7 @@ namespace JQFramework.ECS
             for (int i = 0; i < _tempList.Count; i++)
             {
                 JQEntity entity = _tempList[i];
-                entity.onLateUpdate();
+                entity.OnLateUpdate();
             }
         }
         
@@ -113,7 +113,7 @@ namespace JQFramework.ECS
             for (int i = 0; i < _tempList.Count; i++)
             {
                 JQEntity entity = _tempList[i];
-                entity.onDisplayUpdate();
+                entity.OnDisplayUpdate();
             }
         }
 
