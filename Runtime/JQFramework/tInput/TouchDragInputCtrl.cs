@@ -10,7 +10,7 @@ namespace JQFramework.tInput
     /// <summary>
     /// 过时，使用TouchDragInputCtrl
     /// </summary>
-    public class TouchDragInputCtrl
+    public class TouchDragInputCtrl<T> where T: JQEntity
     {
         protected int _normalLayerMask; //点瓶子
         private bool isDragging;
@@ -20,7 +20,7 @@ namespace JQFramework.tInput
         protected Vector2 _touchStartPos;
         protected Vector3 offset;
         protected Vector3 screenPoint; // 存储物体在屏幕上的位置
-        protected Dictionary<GameObject, JQEntity> _colliderGo2EntitieDic = new Dictionary<GameObject, JQEntity>();
+        protected Dictionary<GameObject, T> _colliderGo2EntitieDic = new Dictionary<GameObject, T>();
 
         public TouchDragInputCtrl(Camera camera)
         {
@@ -28,14 +28,14 @@ namespace JQFramework.tInput
             _normalLayerMask = LayerMgr.GetMaskValue(LayerMgr.NormalLayers);
         }
 
-        public void AddColliderGoEntity(GameObject colliderGo, JQEntity cabinetEntity)
+        public void AddColliderGoEntity(GameObject colliderGo, T cabinetEntity)
         {
             _colliderGo2EntitieDic.Add(colliderGo, cabinetEntity);
         }
 
         #region 主要方法
 
-        protected JQEntity Raycast(Vector2 pos, int layerMask)
+        protected T Raycast(Vector2 pos, int layerMask)
         {
             Ray ray = _camera.ScreenPointToRay(pos);
             RaycastHit hit;
@@ -44,7 +44,7 @@ namespace JQFramework.tInput
             {
                 GameObject colliderGo = hit.collider.gameObject;
                 // JQLog.LogError(colliderGo.name);
-                if (_colliderGo2EntitieDic.TryGetValue(colliderGo, out JQEntity clickEntity))
+                if (_colliderGo2EntitieDic.TryGetValue(colliderGo, out T clickEntity))
                 {
                     return clickEntity;
                 }

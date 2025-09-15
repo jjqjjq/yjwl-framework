@@ -3,6 +3,14 @@ using UnityEngine;
 
 namespace JQCore.tUtil
 {
+    //          0丨
+    //           丨    pos2
+    //           丨
+    //  -90      丨        90
+    // ---------pos1---------
+    //           丨
+    //           丨
+    //           丨
     public static class MathUtil
     {
         /// <summary>

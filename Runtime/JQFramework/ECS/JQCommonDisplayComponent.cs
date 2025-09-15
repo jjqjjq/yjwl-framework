@@ -82,7 +82,11 @@ namespace JQCore.ECS
             OnUnBindAttr();
             if (_gameObject != null)
             {
+#if UNITY_EDITOR
+                CommonResMgr.Instance.DeSpawn(_resName, _gameObject);
+#else
                 CommonResMgr.Instance.DeSpawnPerformance(_resName, _gameObject);
+#endif
                 _transform = null;
                 _gameObject = null;
             }
