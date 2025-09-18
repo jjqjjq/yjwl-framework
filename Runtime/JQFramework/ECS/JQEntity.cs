@@ -223,6 +223,12 @@ namespace JQCore.ECS
             }
         }
 
+        public void ClearEvent()
+        {
+            _eventDispatcher.EventDispose();
+            _eventDispatcher = null;
+        }
+
         public virtual void Dispose()
         {
             // JQLog.Log($"Dispose Entity:{_instanceId}");
@@ -259,9 +265,8 @@ namespace JQCore.ECS
 
             _componentDic.Clear();
             _componentDic = null;
-
-            _eventDispatcher.EventDispose();
-            _eventDispatcher = null;
+            
+            ClearEvent();
 
             // entityMgr = null;
             // worldMgr = null;

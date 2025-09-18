@@ -123,6 +123,13 @@ namespace JQFramework.ECS
             for (int i = 0; i < _entityList.Count; i++)
             {
                 JQEntity entity = _entityList[i];
+                entity.ClearEvent();
+                // ObjectPool.Instance.Recycle(entity);
+            }
+            
+            for (int i = 0; i < _entityList.Count; i++)
+            {
+                JQEntity entity = _entityList[i];
                 entity.Dispose();
                 // ObjectPool.Instance.Recycle(entity);
             }
