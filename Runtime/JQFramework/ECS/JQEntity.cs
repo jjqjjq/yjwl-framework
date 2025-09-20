@@ -71,6 +71,7 @@ namespace JQCore.ECS
                 JQLog.LogError($"Disposed Entity:{_instanceId}");
                 return null;
             }
+
             _componentDic.TryGetValue(typeof(T), out JQComponent component);
             return component as T;
         }
@@ -225,8 +226,11 @@ namespace JQCore.ECS
 
         public void ClearEvent()
         {
-            _eventDispatcher.EventDispose();
-            _eventDispatcher = null;
+            if (_eventDispatcher != null)
+            {
+                _eventDispatcher.EventDispose();
+                _eventDispatcher = null;
+            }
         }
 
         public virtual void Dispose()
@@ -265,7 +269,7 @@ namespace JQCore.ECS
 
             _componentDic.Clear();
             _componentDic = null;
-            
+
             ClearEvent();
 
             // entityMgr = null;
