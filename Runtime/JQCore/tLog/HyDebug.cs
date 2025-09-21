@@ -125,7 +125,7 @@ namespace JQCore.Log
             {
                 _errorReporterAction?.Invoke(condition, stacktrace);
             }
-            
+
             var frameCount = 0;
             try
             {
@@ -135,7 +135,8 @@ namespace JQCore.Log
             {
             }
 
-            var log = new Reporter.Log { condition = condition, stacktrace = stacktrace, logType = (Reporter._LogType)type, frameCount = frameCount };
+            var log = new Reporter.Log
+                { condition = condition, stacktrace = stacktrace, logType = (Reporter._LogType)type, frameCount = frameCount };
             lock (threadedLogs)
             {
                 threadedLogs.Add(log);
@@ -216,7 +217,11 @@ namespace JQCore.Log
 
         public void Log(object message)
         {
+#if UNITY_EDITOR
+            if (_canShowGUI) Debug.Log($"[{Time.frameCount}]{message}");
+#else
             if (_canShowGUI) Debug.Log(message);
+#endif
             CaptureLogThread(LogType.Log, message.ToString(), string.Empty);
         }
 

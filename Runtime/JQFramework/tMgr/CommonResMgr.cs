@@ -55,6 +55,11 @@ namespace JQFramework.tMgr
         private PrefabLoader getPrefabLoader(string assetName, int preloadAmount)
         {
             GameObject prefab = _lib.GetAsset(assetName) as GameObject;
+            if (prefab == null)
+            {
+                JQLog.LogError($"Can not find CommonRes Asset: {assetName}");
+                return null;
+            }
             PrefabLoader prefabLoader = UrlPrefabLoaderUtil.getObjPrefab(assetName, prefab.transform, preloadAmount);
             return prefabLoader;
         }
