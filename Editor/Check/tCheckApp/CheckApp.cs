@@ -50,6 +50,7 @@ namespace JQEditor.Check.tCheckApp
 //            AddInfo(effectGroup, "【×】Particle/xxxx -> Mobile/Particle/xxxx", CheckEffectTools.ChangeShader);
             AddInfo(effectGroup, "查找引用丢失-特效", CheckGlobalTools.CheckEffectMissingReferences);
             AddInfo(effectGroup, "特效动画检查", CheckEffectTools.handleAnimator);
+            AddInfo(effectGroup, "sorting order", CheckEffectTools.checkSortOrder);
             AddInfo(effectGroup, "插件Materials替换为项目Materials-特效", CheckEffectTools.checkUsePackageMaterials);
             _list.Add(effectGroup);
 

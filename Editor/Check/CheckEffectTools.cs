@@ -17,13 +17,12 @@ namespace JQEditor.Check
 {
     public static class CheckEffectTools
     {
-        
         public static void checkUsePackageMaterials(string name, Action endAction)
         {
             CheckCommonTools.SearchAndDo(name, $"Assets/{PathUtil.RES_FOLDER}/Effect", checkPackageMaterial, null, endAction);
             Debug.Log("xxx");
         }
-        
+
         private static bool checkPackageMaterial(string assetPath, GameObject handleGameObject, object obj1)
         {
             CheckGlobalTools.replaceUsePackageMaterials(handleGameObject);
@@ -32,9 +31,12 @@ namespace JQEditor.Check
 
         public static void handleAnimator(string name, Action endAction)
         {
-            CheckCommonTools.Search<AnimatorController>(name + "_动画名称", $"Assets/{PathUtil.RES_FOLDER}/Effect", changeAnimation, null, endAction, true, ".controller", "t:AnimatorController");
-            CheckCommonTools.Search<GameObject>(name + "_动画帧", $"Assets/{PathUtil.RES_FOLDER}/Effect", checkEffect, null, endAction);
+            CheckCommonTools.Search<AnimatorController>(name + "_动画名称", $"Assets/{PathUtil.RES_FOLDER}/Effect", changeAnimation,
+                null, endAction, true, ".controller", "t:AnimatorController");
+            CheckCommonTools.Search<GameObject>(name + "_动画帧", $"Assets/{PathUtil.RES_FOLDER}/Effect", checkEffect, null,
+                endAction);
         }
+
         private static bool changeAnimation(string assetPath, AnimatorController animatorController, object obj1)
         {
             if (animatorController.layers.Length > 0)
@@ -46,6 +48,7 @@ namespace JQEditor.Check
                     Debug.LogFormat($"[特效优化]设置默认动画名称为play:{0}", assetPath);
                 }
             }
+
             return true;
         }
 
@@ -75,7 +78,8 @@ namespace JQEditor.Check
                         if (binding.propertyName == "m_IsActive")
                         {
                             AnimationCurve animationCurve = AnimationUtility.GetEditorCurve(clip, binding);
-                            Debug.LogError("[动画内存在设置Active]" + clip.name + ":" + binding.path + "/" + binding.propertyName + ", Keys: " + animationCurve.keys.Length);
+                            Debug.LogError("[动画内存在设置Active]" + clip.name + ":" + binding.path + "/" + binding.propertyName +
+                                           ", Keys: " + animationCurve.keys.Length);
                         }
                     }
                 }
@@ -89,11 +93,13 @@ namespace JQEditor.Check
             {
                 Debug.LogError("[特效内无用组件-Collider]" + collider.name + ":" + handleGameObject);
             }
+
             Animation[] animations = handleGameObject.GetComponentsInChildren<Animation>(true);
             foreach (Animation animation in animations)
             {
                 Debug.LogError("[特效内无用组件-Animation]" + animation.name + ":" + handleGameObject);
             }
+
             Animator[] animators = handleGameObject.GetComponentsInChildren<Animator>(true);
             foreach (Animator animator in animators)
             {
@@ -102,6 +108,7 @@ namespace JQEditor.Check
                     Debug.LogError("[特效内无用组件-Animator 中animatorContoller为空]" + animator.name + ":" + handleGameObject);
                 }
             }
+
             MeshFilter[] meshFilters = handleGameObject.GetComponentsInChildren<MeshFilter>(true);
             foreach (MeshFilter meshFilter in meshFilters)
             {
@@ -163,7 +170,7 @@ namespace JQEditor.Check
             CheckCommonTools.SearchAndDo(name, $"Assets/{PathUtil.RES_FOLDER}/Effect_al", changeOneShader, null, endAction);
         }
 
-        public static bool changeOneShader(string assetPath, GameObject obj, object obj1)
+        private static bool changeOneShader(string assetPath, GameObject obj, object obj1)
         {
             Renderer[] renderers = obj.GetComponentsInChildren<Renderer>(true);
             foreach (Renderer renderer in renderers)
@@ -173,11 +180,13 @@ namespace JQEditor.Check
                     Debug.LogFormat("[renderer null]path:{0} obj:{1}", assetPath, renderer.name);
                     continue;
                 }
+
                 if (renderer.sharedMaterial == null)
                 {
                     Debug.LogFormat("[sharedMaterial null]path:{0} obj:{1}", assetPath, renderer.name);
                     continue;
                 }
+
                 Shader shader = renderer.sharedMaterial.shader;
                 switch (shader.name)
                 {
@@ -198,6 +207,7 @@ namespace JQEditor.Check
                         break;
                 }
             }
+
             return true;
         }
 
@@ -207,6 +217,22 @@ namespace JQEditor.Check
             Texture texture = renderer.sharedMaterial.GetTexture("_MainTex");
             renderer.sharedMaterial.shader = Shader.Find(newShaderName);
             renderer.sharedMaterial.SetTexture("_MainTex", texture);
+        }
+
+        public static void checkSortOrder(string name, Action endAction)
+        {
+            CheckCommonTools.SearchAndDo(name, $"Assets/{PathUtil.RES_FOLDER}/Effect/Prefabs", checkOneSortOrder, null, endAction);
+        }
+
+        private static bool checkOneSortOrder(string assetPath, GameObject obj, object obj1)
+        {
+            ParticleSystemRenderer[] rendererRenderers = obj.GetComponentsInChildren<ParticleSystemRenderer>(true);
+            for (int i = 0; i < rendererRenderers.Length; i++)
+            {
+                ParticleSystemRenderer renderer = rendererRenderers[i];
+                renderer.sortingOrder = 7;
+            }
+            return true;
         }
     }
 }

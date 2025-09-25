@@ -81,6 +81,7 @@ namespace JQCore.ECS
         public override void Dispose()
         {
             OnUnBindAttr();
+            UrlPrefabLoaderUtil.CancelLoadAsset(_resUrl, onLoadCallback);
             if (_gameObject != null)
             {
                 _prefabLoader.DeSpawn(_gameObject, true);
