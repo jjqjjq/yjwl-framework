@@ -19,6 +19,9 @@ namespace JQCore.ECS
         protected BindObjLib _bindObjLib;
 
         public Transform Transform => _transform;
+
+        public BindObjLib BindObjLib => _bindObjLib;
+
         public GameObject GameObject => _gameObject;
 
         protected JQUrlDisplayComponent(string name, int executePriority, bool needEvent) : base(name, executePriority, needEvent)

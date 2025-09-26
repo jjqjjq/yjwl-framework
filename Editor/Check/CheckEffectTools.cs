@@ -232,6 +232,13 @@ namespace JQEditor.Check
                 ParticleSystemRenderer renderer = rendererRenderers[i];
                 renderer.sortingOrder = 7;
             }
+            
+            LineRenderer[] lineRenderers = obj.GetComponentsInChildren<LineRenderer>(true);
+            for (int i = 0; i < lineRenderers.Length; i++)
+            {
+                LineRenderer renderer = lineRenderers[i];
+                renderer.sortingOrder = 7;
+            }
             return true;
         }
     }

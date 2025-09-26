@@ -236,7 +236,6 @@ namespace JQCore.ECS
         public virtual void Dispose()
         {
             // JQLog.Log($"Dispose Entity:{_instanceId}");
-            _eventDispatcher.TriggerEvent(Entity_DISPOSE);
             for (int i = 0; i < _componentList.Count; i++)
             {
                 JQComponent component = _componentList[i];

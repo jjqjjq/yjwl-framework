@@ -30,6 +30,16 @@ namespace JQCore.tRes
 
         private Dictionary<string, Object> _objectDic;
 
+        public bool ContainKey(string key)
+        {
+            if (_objectDic == null)
+            {
+                InitDic();
+                // JQLog.LogError("ObjectDic为空，请先调用InitDic()方法");
+            }
+            return _objectDic.ContainsKey(key);
+        }
+
         public Object GetObjByKey(string key, bool isLog = true)
         {
             if (_objectDic == null)
